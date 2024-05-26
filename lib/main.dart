@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:team_check_mate/app.dart';
 import "package:provider/provider.dart";
+import 'package:team_check_mate/home.dart';
 import 'package:team_check_mate/login.dart';
 import 'firebase_options.dart';
 
@@ -13,26 +14,30 @@ void main() async {
 
   runApp(ChangeNotifierProvider(
     create: (context) => ApplicationState(),
-    builder: ((context, child) => const MyApp()),
+    builder: ((context, child) => const App()),
   ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomePage(),
+    ),
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const LoginPage(),
-    );
-  }
-}
+    // GoRoute(
+    //   path: '/home/detail/edit',
+    //   builder: (context, state) {
+    //     final appState = Provider.of<ApplicationState>(context, listen: false);
+    //     return EditPage(appState: appState);
+    //   },
+    // ),
+  ],
+);
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -40,7 +45,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'WishList',
+      title: 'Team Check Mate',
       theme: ThemeData(
         buttonTheme: Theme.of(context).buttonTheme.copyWith(
               highlightColor: Colors.teal,
@@ -56,20 +61,3 @@ class App extends StatelessWidget {
     );
   }
 }
-
-final _router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const LoginPage(),
-    ),
-
-    // GoRoute(
-    //   path: '/home/detail/edit',
-    //   builder: (context, state) {
-    //     final appState = Provider.of<ApplicationState>(context, listen: false);
-    //     return EditPage(appState: appState);
-    //   },
-    // ),
-  ],
-);
