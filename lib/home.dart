@@ -76,7 +76,7 @@ class FolderCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 5, 10, 20),
                 child: Text(
-                  "부가설명부가설명부가설명부가설명부가설명부가설명",
+                  team.id,
                   style: GoogleFonts.lato(fontSize: 15),
                   maxLines: 1,
                 ),

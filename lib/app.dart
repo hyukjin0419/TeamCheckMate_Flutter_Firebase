@@ -19,7 +19,7 @@ class ApplicationState extends ChangeNotifier {
   String? uid;
 
   StreamSubscription<QuerySnapshot>? _teamSubscription;
-  List<Team> _teams = [];
+  final List<Team> _teams = [];
   List<Team> get teams => _teams;
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -60,24 +60,9 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
-  Future<void> init() async {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-    _teamSubscription = _db.collection('teams').snapshots().listen(
-      (snapshot) {
-        List<Team> newTeams = [];
-        for (final document in snapshot.docs) {
-          newTeams.add(
-            Team(
-              id: document.id,
-              title: (document.data()['title'] ?? '') as String,
-            ),
-          );
-        }
-        _teams = newTeams;
-      },
-    );
-  }
+  // Future<void> init() async {
+  //
+  // }
 
   Stream<List<Team>> getTeamsStream() {
     return _db.collection('teams').snapshots().map(
