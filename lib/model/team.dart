@@ -16,4 +16,11 @@ class Team {
   // final String description;
   // final Timestamp timestamp;
   // final Timestamp updateTimestamp;
+  factory Team.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data() as Map;
+    return Team(
+      id: doc.id,
+      title: data['title'] ?? '',
+    );
+  }
 }

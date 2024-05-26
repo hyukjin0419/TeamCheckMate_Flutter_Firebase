@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:team_check_mate/firebase_options.dart';
 import 'package:team_check_mate/model/team.dart';
 
 class ApplicationState extends ChangeNotifier {
@@ -58,7 +60,9 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
-  Future<void> getTeam() async {
+  Future<void> init() async {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
     _teamSubscription = _db.collection('teams').snapshots().listen(
       (snapshot) {
         List<Team> newTeams = [];
@@ -73,5 +77,12 @@ class ApplicationState extends ChangeNotifier {
         _teams = newTeams;
       },
     );
+  }
+
+  Stream<List<Team>> getTeamsStream() {
+    return _db.collection('teams').snapshots().map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => Team.fromFirestore(doc)).toList(),
+        );
   }
 }
