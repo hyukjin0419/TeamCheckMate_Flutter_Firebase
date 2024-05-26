@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:team_check_mate/model/team.dart';
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -14,8 +16,11 @@ class ApplicationState extends ChangeNotifier {
   bool get loggedIn => _loggedIn;
   String? uid;
 
-  Future<void> init() async {}
+  StreamSubscription<QuerySnapshot>? _teamSubscription;
+  List<Team> _teams = [];
+  List<Team> get teams => _teams;
 
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   //구글 로그인
   Future<UserCredential?> signInWithGoogle() async {
     try {
@@ -51,5 +56,22 @@ class ApplicationState extends ChangeNotifier {
       print('Error during Google Sign-In: $e');
       rethrow;
     }
+  }
+
+  Future<void> getTeam() async {
+    _teamSubscription = _db.collection('teams').snapshots().listen(
+      (snapshot) {
+        List<Team> newTeams = [];
+        for (final document in snapshot.docs) {
+          newTeams.add(
+            Team(
+              id: document.id,
+              title: (document.data()['title'] ?? '') as String,
+            ),
+          );
+        }
+        _teams = newTeams;
+      },
+    );
   }
 }
