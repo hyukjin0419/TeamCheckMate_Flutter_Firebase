@@ -21,6 +21,21 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
+        title: Text(
+          'Team',
+          style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.add_box_outlined,
+              semanticLabel: 'add',
+            ),
+            onPressed: () {
+              context.push("/home/teamAdd");
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<List<Team>>(
         stream: appState.getTeamsStream(),
@@ -57,7 +72,7 @@ class FolderCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         elevation: 5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: const Color.fromRGBO(245, 245, 245, 1.0),
+        color: const Color.fromRGBO(33, 33, 33, 1.0),
         child: SizedBox(
           width: cardWidth,
           height: cardHeight,
@@ -68,8 +83,10 @@ class FolderCard extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(20, 20, 10, 0),
                 child: Text(
                   team.title,
-                  style: GoogleFonts.lato(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromRGBO(150, 148, 148, 1.0)),
                   maxLines: 1,
                 ),
               ),
@@ -77,7 +94,9 @@ class FolderCard extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(20, 5, 10, 20),
                 child: Text(
                   team.id,
-                  style: GoogleFonts.lato(fontSize: 15),
+                  style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: const Color.fromRGBO(150, 148, 148, 1.0)),
                   maxLines: 1,
                 ),
               )

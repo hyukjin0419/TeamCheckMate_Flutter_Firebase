@@ -60,10 +60,6 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
-  // Future<void> init() async {
-  //
-  // }
-
   Stream<List<Team>> getTeamsStream() {
     return _db.collection('teams').snapshots().map(
           (snapshot) =>

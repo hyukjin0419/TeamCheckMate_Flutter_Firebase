@@ -6,6 +6,7 @@ import 'package:team_check_mate/app.dart';
 import "package:provider/provider.dart";
 import 'package:team_check_mate/home.dart';
 import 'package:team_check_mate/login.dart';
+import 'package:team_check_mate/teamAdd.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -25,10 +26,17 @@ final _router = GoRouter(
       builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomePage(),
-    ),
-
+        path: '/home',
+        builder: (context, state) => const HomePage(),
+        routes: [
+          GoRoute(
+              path: 'teamAdd',
+              builder: ((context, state) => const TeamAddPage()))
+        ]),
+    // GoRoute(
+    //   path: '/home/teamAdd',
+    //   builder: (context, state) => const TeamAddPage(),
+    // ),
     // GoRoute(
     //   path: '/home/detail/edit',
     //   builder: (context, state) {
