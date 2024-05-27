@@ -22,10 +22,11 @@ class _TeamAddPageState extends State<TeamAddPage> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           leadingWidth: 80,
-          leading: TextButton(
-            child: const Text('Cancel'),
+          leading: IconButton(
+            icon: const Icon(Icons.backspace_outlined,
+                semanticLabel: 'back', color: Colors.white),
             onPressed: () {
-              context.go('/home');
+              context.pop();
             },
           ),
           title: Text(
@@ -33,12 +34,10 @@ class _TeamAddPageState extends State<TeamAddPage> {
             style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.add_box_outlined,
-                semanticLabel: 'add',
-              ),
+            TextButton(
               onPressed: () {},
+              child: const Text('확인',
+                  style: TextStyle(color: Colors.white, fontSize: 18)),
             ),
           ],
         ),

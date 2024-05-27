@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(
               Icons.add_box_outlined,
               semanticLabel: 'add',
+              color: Colors.white,
             ),
             onPressed: () {
               context.push("/home/teamAdd");
