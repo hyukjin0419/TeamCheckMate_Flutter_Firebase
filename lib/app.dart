@@ -73,11 +73,13 @@ class ApplicationState extends ChangeNotifier {
       'timestamp': FieldValue.serverTimestamp(),
       'updateTimestamp': FieldValue.serverTimestamp(),
     };
-
+    // print("whate");
     try {
       await _db.collection('teams').add(teamData);
+      debugPrint("[add.part] Team added");
     } catch (e) {
-      print("[add.part] Error with addTeam function");
+      debugPrint("[add.part] Error with addTeam function");
+      debugPrint(e as String?);
     }
   }
 }
