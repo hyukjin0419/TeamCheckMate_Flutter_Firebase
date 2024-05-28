@@ -18,31 +18,44 @@ class _TeamAddPageState extends State<TeamAddPage> {
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
     return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          leadingWidth: 80,
-          leading: IconButton(
-            icon: const Icon(Icons.backspace_outlined,
-                semanticLabel: 'back', color: Colors.white),
-            onPressed: () {
-              context.pop();
-            },
+      // backgroundColor: Colors.black,
+      appBar: AppBar(
+        // backgroundColor: Colors.black,
+        leadingWidth: 80,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.backspace_outlined,
+            semanticLabel: 'back',
+            // color: Colors.white
           ),
-          title: Text(
-            '팀 생성하기',
-            style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {},
-              child: const Text('확인',
-                  style: TextStyle(color: Colors.white, fontSize: 18)),
-            ),
-          ],
+          onPressed: () {
+            context.pop();
+          },
         ),
-        body: const Center(
-            child: Text('asdfasdfasdfsfasdfs',
-                style: TextStyle(color: Colors.white))));
+        title: Text(
+          '팀 생성하기',
+          style: GoogleFonts.poppins(
+            fontSize: 22,
+            // color: Colors.white
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {},
+            child: const Text('확인',
+                style: TextStyle(color: Colors.black, fontSize: 18)),
+          ),
+        ],
+      ),
+      body: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: '팀 이름을 입력하세요',
+          ),
+        ),
+      ),
+    );
   }
 }

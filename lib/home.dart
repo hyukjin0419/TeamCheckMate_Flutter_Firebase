@@ -18,19 +18,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: const Color.fromRGBO(231, 228, 192, 1.0),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        // backgroundColor: const Color.fromRGBO(231, 228, 192, 1.0),
         title: Text(
           'Team',
-          style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
+          style: GoogleFonts.poppins(
+            fontSize: 22,
+            // color: const Color.fromRGBO(95, 98, 9, 1.0)
+          ),
         ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(
               Icons.add_box_outlined,
               semanticLabel: 'add',
-              color: Colors.white,
+              // color: Color.fromRGBO(95, 98, 9, 1.0),
             ),
             onPressed: () {
               context.push("/home/teamAdd");
@@ -73,7 +76,7 @@ class FolderCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         elevation: 5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: const Color.fromRGBO(33, 33, 33, 1.0),
+        // color: const Color.fromRGBO(230, 232, 133, 1.0),
         child: SizedBox(
           width: cardWidth,
           height: cardHeight,
@@ -85,9 +88,10 @@ class FolderCard extends StatelessWidget {
                 child: Text(
                   team.title,
                   style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: const Color.fromRGBO(150, 148, 148, 1.0)),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    // color: const Color.fromRGBO(95, 98, 9, 1.0)
+                  ),
                   maxLines: 1,
                 ),
               ),
@@ -96,8 +100,9 @@ class FolderCard extends StatelessWidget {
                 child: Text(
                   team.id,
                   style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      color: const Color.fromRGBO(150, 148, 148, 1.0)),
+                    fontSize: 15,
+                    // color: const Color.fromRGBO(150, 148, 148, 1.0)),
+                  ),
                   maxLines: 1,
                 ),
               )
