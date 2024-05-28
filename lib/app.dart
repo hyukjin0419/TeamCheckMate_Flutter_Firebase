@@ -66,4 +66,18 @@ class ApplicationState extends ChangeNotifier {
               snapshot.docs.map((doc) => Team.fromFirestore(doc)).toList(),
         );
   }
+
+  Future<void> addTeam(String title) async {
+    final Map<String, dynamic> teamData = {
+      'title': title,
+      'timestamp': FieldValue.serverTimestamp(),
+      'updateTimestamp': FieldValue.serverTimestamp(),
+    };
+
+    try {
+      await _db.collection('teams').add(teamData);
+    } catch (e) {
+      print("[add.part] Error with addTeam function");
+    }
+  }
 }
