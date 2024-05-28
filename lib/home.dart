@@ -48,7 +48,11 @@ class _HomePageState extends State<HomePage> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return FolderCard(team: snapshot.data![index]);
+                return GestureDetector(
+                    onTap: () {
+                      context.push("/home/teamDetail");
+                    },
+                    child: FolderCard(team: snapshot.data![index]));
               },
             );
           } else {
