@@ -45,7 +45,7 @@ class _TeamAddPageState extends State<TeamAddPage> {
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                appState.addTeam(_titlecontroller.text);
+                appState.addTeam(_titlecontroller.text, "FFE600");
                 context.go('/home');
               }
             },

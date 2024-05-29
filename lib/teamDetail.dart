@@ -15,25 +15,46 @@ class TeamDetailPage extends StatefulWidget {
 class _TeamDetailPageState extends State<TeamDetailPage> {
   @override
   Widget build(BuildContext context) {
-    String color = "CCEEFF";
+    String color = widget.team.color;
     // ignore: unused_local_variable
     var appState = Provider.of<ApplicationState>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.black,
-        leadingWidth: 80,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.backspace_outlined,
-            semanticLabel: 'back',
-            // color: Colors.white
+          centerTitle: true,
+          // backgroundColor: Colors.black,
+          leadingWidth: 80,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.backspace_outlined,
+              semanticLabel: 'back',
+              // color: Colors.white
+            ),
+            onPressed: () {
+              context.pop();
+            },
           ),
-          onPressed: () {
-            context.pop();
-          },
-        ),
-        title: Text(widget.team.title),
-      ),
+          title: Text(widget.team.title),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.create,
+                semanticLabel: 'update',
+              ),
+              onPressed: () {
+                // context.go('/home/detail/edit');
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.delete,
+                semanticLabel: 'delete',
+              ),
+              onPressed: () {
+                context.pop();
+                appState.deleteTeam(widget.team.id);
+              },
+            ),
+          ]),
       body: Center(
         child: Image.asset('assets/openFileColor/$color.png'),
       ),

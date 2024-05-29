@@ -84,9 +84,10 @@ class ApplicationState extends ChangeNotifier {
         );
   }
 
-  Future<void> addTeam(String title) async {
+  Future<void> addTeam(String title, String color) async {
     final Map<String, dynamic> teamData = {
       'title': title,
+      'color': color,
       'timestamp': FieldValue.serverTimestamp(),
       'updateTimestamp': FieldValue.serverTimestamp(),
     };
@@ -97,6 +98,15 @@ class ApplicationState extends ChangeNotifier {
     } catch (e) {
       debugPrint("[add.part] Error with addTeam function");
       debugPrint(e as String?);
+    }
+  }
+
+  Future<void> deleteTeam(String teamId) async {
+    try {
+      await _db.collection('teams').doc(teamId).delete();
+      debugPrint("Team successfully deleted.");
+    } catch (e) {
+      debugPrint("Error deleting product: $e");
     }
   }
 }
