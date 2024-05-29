@@ -15,6 +15,7 @@ class TeamDetailPage extends StatefulWidget {
 class _TeamDetailPageState extends State<TeamDetailPage> {
   @override
   Widget build(BuildContext context) {
+    String color = "CCEEFF";
     // ignore: unused_local_variable
     var appState = Provider.of<ApplicationState>(context, listen: true);
     return Scaffold(
@@ -32,6 +33,9 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
           },
         ),
         title: Text(widget.team.title),
+      ),
+      body: Center(
+        child: Image.asset('assets/openFileColor/$color.png'),
       ),
     );
   }
