@@ -6,6 +6,7 @@ import 'package:team_check_mate/app.dart';
 import "package:provider/provider.dart";
 import 'package:team_check_mate/home.dart';
 import 'package:team_check_mate/login.dart';
+import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/teamAdd.dart';
 import 'package:team_check_mate/teamDetail.dart';
 import 'firebase_options.dart';
@@ -35,9 +36,16 @@ final _router = GoRouter(
             builder: ((context, state) => const TeamAddPage()),
           ),
           GoRoute(
-            path: 'teamDetail',
-            builder: ((context, state) => const TeamDetailPage()),
-          ),
+              path: 'teamDetail',
+              builder: ((context, state) {
+                final team = state.extra as Team?;
+                if (team != null) {
+                  return TeamDetailPage(team: team);
+                } else {
+                  debugPrint("No team data provided");
+                  return ErrorWidget(ErrorWidget);
+                }
+              })),
         ]),
     // GoRoute(
     //   path: '/home/teamAdd',
