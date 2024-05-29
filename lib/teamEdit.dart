@@ -6,7 +6,8 @@ import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/team.dart';
 
 class TeamEditPage extends StatefulWidget {
-  const TeamEditPage({super.key, required Team team});
+  final Team team;
+  const TeamEditPage({super.key, required this.team});
 
   @override
   State<TeamEditPage> createState() => _TeamEditPageState();
@@ -46,7 +47,7 @@ class _TeamEditPageState extends State<TeamEditPage> {
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                appState.addTeam(_titlecontroller.text, "FFE600");
+                appState.updateTeam(widget.team, _titlecontroller.text);
                 context.go('/home');
               }
             },

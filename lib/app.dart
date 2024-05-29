@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -107,6 +108,20 @@ class ApplicationState extends ChangeNotifier {
       debugPrint("Team successfully deleted.");
     } catch (e) {
       debugPrint("Error deleting product: $e");
+    }
+  }
+
+  Future<void> updateTeam(Team team, String newTitle) async {
+    final Map<String, dynamic> teamData = {
+      'title': newTitle,
+      'color': team.color,
+      'updateTimestamp': FieldValue.serverTimestamp(),
+    };
+    try {
+      await _db.collection('teams').doc(team.id).update(teamData);
+      debugPrint("Team $team.id successfully updated.");
+    } catch (e) {
+      debugPrint("Error updating product: $e");
     }
   }
 }
