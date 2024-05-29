@@ -33,7 +33,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               context.pop();
             },
           ),
-          title: Text(widget.team.title),
+          title: const Text("팀 정보"),
           actions: <Widget>[
             IconButton(
               icon: const Icon(
@@ -41,7 +41,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                 semanticLabel: 'update',
               ),
               onPressed: () {
-                // context.go('/home/detail/edit');
+                context.push("/home/teamDetail/teamEdit", extra: widget.team);
               },
             ),
             IconButton(
