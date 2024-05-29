@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/team.dart';
 
@@ -56,7 +57,16 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
             ),
           ]),
       body: Center(
-        child: Image.asset('assets/openFileColor/$color.png'),
+        child: Column(
+          children: [
+            Image.asset('assets/openFileColor/$color.png'),
+            QrImageView(
+              data: widget.team.id,
+              version: QrVersions.auto,
+              size: 200.0,
+            ),
+          ],
+        ),
       ),
     );
   }
