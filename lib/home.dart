@@ -161,6 +161,20 @@ class FolderCard extends StatelessWidget {
             softWrap: false,
           ),
         ),
+        Positioned(
+          right: 10,
+          top: folderHeight * 0.7,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              print('Vertical dots tapped!');
+            },
+            child: const SizedBox(
+              width: 25,
+              height: 30,
+            ),
+          ),
+        )
       ],
     );
   }
