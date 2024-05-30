@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -103,22 +104,30 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
             //   },
             // ),
           ]),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-                width: folderWidth,
-                height: folderHeight,
-                child: Image.asset(
+      body: Column(
+        children: [
+          Center(
+              child: SizedBox(
+            width: folderWidth,
+            height: folderHeight,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.asset(
                   'assets/openFileColor/$color.png',
-                )),
-            QrImageView(
-              data: widget.team.id,
-              version: QrVersions.auto,
-              size: 200.0,
+                ),
+                Positioned(
+                    top: folderHeight * (6 / 10),
+                    child: Text(widget.team.title)),
+              ],
             ),
-          ],
-        ),
+          )),
+          // QrImageView(
+          //   data: widget.team.id,
+          //   version: QrVersions.auto,
+          //   size: 200.0,
+          // ),
+        ],
       ),
     );
   }
