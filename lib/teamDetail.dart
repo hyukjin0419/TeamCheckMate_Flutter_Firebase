@@ -53,6 +53,15 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                     // onSelected:
                     <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
+                        value: 'create',
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.post_add,
+                          ),
+                          title: Text('과제 추가하기'),
+                        ),
+                      ),
+                      const PopupMenuItem<String>(
                         value: 'edit',
                         child: ListTile(
                             leading: Icon(Icons.edit_outlined),
