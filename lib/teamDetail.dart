@@ -33,7 +33,6 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
             icon: const Icon(
               Icons.backspace_outlined,
               semanticLabel: 'back',
-              // color: Colors.white
             ),
             onPressed: () {
               context.pop();
@@ -51,6 +50,8 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                   } else if (value == 'edit') {
                     context.push("/home/teamDetail/teamEdit",
                         extra: widget.team);
+                  } else if (value == 'invite') {
+                    context.push("/home/teamDetail/teamQR", extra: widget.team);
                   }
                   debugPrint(value);
                 },
@@ -65,6 +66,12 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                           ),
                           title: Text('과제 추가하기'),
                         ),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'invite',
+                        child: ListTile(
+                            leading: Icon(Icons.qr_code),
+                            title: Text("팀원 초대하기")),
                       ),
                       const PopupMenuItem<String>(
                         value: 'edit',

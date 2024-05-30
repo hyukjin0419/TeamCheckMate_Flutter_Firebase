@@ -10,6 +10,7 @@ import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/teamAdd.dart';
 import 'package:team_check_mate/teamDetail.dart';
 import 'package:team_check_mate/teamEdit.dart';
+import 'package:team_check_mate/teamQr.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -49,16 +50,29 @@ final _router = GoRouter(
               }),
               routes: [
                 GoRoute(
-                    path: 'teamEdit',
-                    builder: ((context, state) {
-                      final team = state.extra as Team?;
-                      if (team != null) {
-                        return TeamEditPage(team: team);
-                      } else {
-                        debugPrint("No team data provided");
-                        return ErrorWidget(ErrorWidget);
-                      }
-                    }))
+                  path: 'teamEdit',
+                  builder: ((context, state) {
+                    final team = state.extra as Team?;
+                    if (team != null) {
+                      return TeamEditPage(team: team);
+                    } else {
+                      debugPrint("No team data provided");
+                      return ErrorWidget(ErrorWidget);
+                    }
+                  }),
+                ),
+                GoRoute(
+                  path: 'teamQR',
+                  builder: ((context, state) {
+                    final team = state.extra as Team?;
+                    if (team != null) {
+                      return TeamQRPage(team: team);
+                    } else {
+                      debugPrint("No team data provided");
+                      return ErrorWidget(ErrorWidget);
+                    }
+                  }),
+                )
               ]),
         ]),
   ],
