@@ -106,8 +106,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
           ]),
       body: Column(
         children: [
-          Center(
-              child: SizedBox(
+          SizedBox(
             width: folderWidth,
             height: folderHeight,
             child: Stack(
@@ -117,11 +116,17 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                   'assets/openFileColor/$color.png',
                 ),
                 Positioned(
-                    top: folderHeight * (6 / 10),
-                    child: Text(widget.team.title)),
+                  top: folderHeight * (6 / 10),
+                  child: Text(
+                    widget.team.title,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                  ),
+                ),
               ],
             ),
-          )),
+          ),
+
           // QrImageView(
           //   data: widget.team.id,
           //   version: QrVersions.auto,
