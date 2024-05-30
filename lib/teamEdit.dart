@@ -38,13 +38,14 @@ class _TeamEditPageState extends State<TeamEditPage> {
           '팀 수정하기',
           style: GoogleFonts.poppins(
             fontSize: 22,
-            // color: Colors.white
           ),
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('확인',
-                style: TextStyle(color: Colors.black, fontSize: 18)),
+            child: const Text(
+              '확인',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            ),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
                 appState.updateTeam(widget.team, _titlecontroller.text);

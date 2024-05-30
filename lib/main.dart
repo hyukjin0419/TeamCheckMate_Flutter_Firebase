@@ -86,6 +86,11 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       title: 'Team Check Mate',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+
+            // titleTextStyle: TextStyle(color: Colors.teal)
+            // textTheme: TextStyle(color: Colors.teal)
+            ),
         buttonTheme: Theme.of(context).buttonTheme.copyWith(
               highlightColor: Colors.teal,
             ),

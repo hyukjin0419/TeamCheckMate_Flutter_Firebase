@@ -30,7 +30,10 @@ class TeamQRPage extends StatelessWidget {
               onPressed: () {
                 context.go('/home');
               },
-              child: const Text('완료')),
+              child: const Text(
+                '완료',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              )),
         ],
       ),
       body: Center(

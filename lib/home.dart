@@ -135,8 +135,7 @@ class FolderCard extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double folderWidth = screenWidth / 2;
     double folderHeight = folderWidth * 0.7;
-    print(folderWidth);
-    print(folderHeight);
+
     // context.push("/home/teamDetail", extra: team);
     return Stack(
       alignment: Alignment.center,
