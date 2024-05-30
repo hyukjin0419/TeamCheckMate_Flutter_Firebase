@@ -36,25 +36,59 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
           ),
           title: const Text("팀 정보"),
           actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.create,
-                semanticLabel: 'update',
-              ),
-              onPressed: () {
-                context.push("/home/teamDetail/teamEdit", extra: widget.team);
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.delete,
-                semanticLabel: 'delete',
-              ),
-              onPressed: () {
-                context.pop();
-                appState.deleteTeam(widget.team.id);
-              },
-            ),
+            PopupMenuButton<String>(
+                initialValue: "no choise",
+                icon: const Icon(Icons.more_vert),
+                onSelected: (String value) {
+                  if (value == 'delete') {
+                    appState.deleteTeam(widget.team.id);
+                    context.pop();
+                  } else if (value == 'edit') {
+                    context.push("/home/teamDetail/teamEdit",
+                        extra: widget.team);
+                  }
+                  debugPrint(value);
+                },
+                itemBuilder: (BuildContext context) =>
+                    // onSelected:
+                    <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        value: 'edit',
+                        child: ListTile(
+                            leading: Icon(Icons.edit_outlined),
+                            title: Text("팀 수정하기")),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'delete',
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.delete_outline,
+                            color: Colors.red,
+                          ),
+                          title: Text('팀 삭제하기'),
+                          textColor: Colors.red,
+                        ),
+                      ),
+                    ]),
+            // IconButton(
+            //   icon: const Icon(
+            //     Icons.create,
+            //     semanticLabel: 'update',
+            //   ),
+            //   onPressed: () {
+            //     context.push("/home/teamDetail/teamEdit", extra: widget.team);
+            //   },
+            // ),
+            // IconButton(
+            //   icon: const Icon(
+            //     Icons.delete,
+            //     semanticLabel: 'delete',
+            //   ),
+            //   onPressed: () {
+            //     context.pop();
+            //     appState.deleteTeam(widget.team.id);
+            //   },
+            // ),
           ]),
       body: Center(
         child: Column(

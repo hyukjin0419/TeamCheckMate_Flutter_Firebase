@@ -109,7 +109,7 @@ class FolderCard extends StatelessWidget {
                   ),
                   maxLines: 1,
                 ),
-              )
+              ),
             ],
           ),
         ),
