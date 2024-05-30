@@ -16,6 +16,10 @@ class TeamDetailPage extends StatefulWidget {
 class _TeamDetailPageState extends State<TeamDetailPage> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double folderWidth = screenWidth * 1;
+    double folderHeight = folderWidth / 3;
+
     String color = widget.team.color;
     // ignore: unused_local_variable
     var appState = Provider.of<ApplicationState>(context, listen: true);
@@ -102,7 +106,12 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
       body: Center(
         child: Column(
           children: [
-            Image.asset('assets/openFileColor/$color.png'),
+            SizedBox(
+                width: folderWidth,
+                height: folderHeight,
+                child: Image.asset(
+                  'assets/openFileColor/$color.png',
+                )),
             QrImageView(
               data: widget.team.id,
               version: QrVersions.auto,
