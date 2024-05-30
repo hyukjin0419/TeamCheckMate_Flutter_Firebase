@@ -19,7 +19,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double folderWidth = screenWidth * 1;
-    double folderHeight = folderWidth / 3;
+    double folderHeight = folderWidth / 2.5;
 
     String color = widget.team.color;
     // ignore: unused_local_variable
