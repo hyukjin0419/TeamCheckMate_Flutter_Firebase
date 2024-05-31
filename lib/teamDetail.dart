@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:team_check_mate/app.dart';
+import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
 
 class TeamDetailPage extends StatefulWidget {
@@ -18,7 +20,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double folderWidth = screenWidth * 1;
+    double folderWidth = screenWidth;
     double folderHeight = folderWidth / 2.5;
 
     String color = widget.team.color;
@@ -137,12 +139,86 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               ],
             ),
           ),
-
+          Flexible(
+            child: StreamBuilder<List<Assignment>>(
+              stream: appState.getAssignmentsStream(widget.team.id),
+              builder: ((context, snapshot) {
+                if (snapshot.hasData) {
+                  var assignments = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: assignments.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var assignment = assignments[index];
+                      return AssignmentCard(assignment: assignment);
+                    },
+                  );
+                } else {
+                  return const Center(child: Text("No Assigmnets founds"));
+                }
+              }),
+            ),
+          )
           // QrImageView(
           //   data: widget.team.id,
           //   version: QrVersions.auto,
           //   size: 200.0,
           // ),
+        ],
+      ),
+    );
+  }
+}
+
+class AssignmentCard extends StatelessWidget {
+  final Assignment assignment;
+  const AssignmentCard({super.key, required this.assignment});
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double folderWidth = screenWidth;
+    double folderHeight = folderWidth * 0.2;
+    String title = assignment.title;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {},
+            child: SizedBox(
+              width: folderWidth,
+              child: Image.asset(
+                'assets/images/assginemt_container.png',
+              ),
+            ),
+          ),
+          Positioned(
+            left: 25,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 20, 12, 12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                    style: GoogleFonts.poppins(fontSize: 12, color: Colors.red),
+                  ),
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                    style: GoogleFonts.poppins(fontSize: 22),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

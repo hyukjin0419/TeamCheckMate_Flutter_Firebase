@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:team_check_mate/model/assignment.dart';
 
 import 'package:team_check_mate/model/team.dart';
 
@@ -123,6 +124,16 @@ class ApplicationState extends ChangeNotifier {
     } catch (e) {
       debugPrint("Error updating product: $e");
     }
+  }
+
+  Stream<List<Assignment>> getAssignmentsStream(String teamId) {
+    return _db
+        .collection('teams')
+        .doc(teamId)
+        .collection('assignments')
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Assignment.fromFirestore(doc)).toList());
   }
 
   Future<void> addAssignment(Team team, String title) async {
