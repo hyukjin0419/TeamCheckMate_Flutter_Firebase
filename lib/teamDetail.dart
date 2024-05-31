@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -32,6 +33,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
             icon: const Icon(
               Icons.backspace_outlined,
               semanticLabel: 'back',
+              // color: Colors.white
             ),
             onPressed: () {
               context.pop();
@@ -49,8 +51,9 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                   } else if (value == 'edit') {
                     context.push("/home/teamDetail/teamEdit",
                         extra: widget.team);
-                  } else if (value == 'invite') {
-                    context.push("/home/teamDetail/teamQR", extra: widget.team);
+                  } else if (value == 'edit') {
+                    context.push("/home/teamDetail/teamEdit",
+                        extra: widget.team);
                   }
                   debugPrint(value);
                 },
