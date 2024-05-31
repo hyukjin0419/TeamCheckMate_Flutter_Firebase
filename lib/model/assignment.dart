@@ -6,7 +6,6 @@ class Assignment {
     required this.id,
     // required this.creatorUid,
     required this.title,
-
     // required this.description,
     required this.timestamp,
     required this.updateTimestamp,

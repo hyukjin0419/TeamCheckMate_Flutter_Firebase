@@ -67,9 +67,9 @@ class _TeamEditPageState extends State<TeamEditPage> {
               return null;
             },
             controller: _titlecontroller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: '팀 이름을 입력하세요',
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              hintText: widget.team.title,
             ),
           ),
         ),

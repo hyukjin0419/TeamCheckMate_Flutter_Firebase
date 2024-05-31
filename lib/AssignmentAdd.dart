@@ -33,7 +33,7 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
           },
         ),
         title: Text(
-          '팀 생성하기',
+          '과제 생성하기',
           style: GoogleFonts.poppins(
             fontSize: 22,
           ),
@@ -44,7 +44,8 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                context.go('/home');
+                appState.addAssignment(widget.team, _titlecontroller.text);
+                // context.go('/home');
               }
             },
           ),
@@ -59,14 +60,14 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
               child: TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '팀 이름을 입력하세요';
+                    return '과제 이름을 입력하세요';
                   }
                   return null;
                 },
                 controller: _titlecontroller,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: '팀 이름을 입력하세요',
+                  hintText: '과제 이름을 입력하세요',
                 ),
               ),
             ),

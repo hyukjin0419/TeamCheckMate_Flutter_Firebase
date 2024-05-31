@@ -124,4 +124,25 @@ class ApplicationState extends ChangeNotifier {
       debugPrint("Error updating product: $e");
     }
   }
+
+  Future<void> addAssignment(Team team, String title) async {
+    final Map<String, dynamic> assignmentData = {
+      'title': title,
+      'teamID': team.id,
+      'timestamp': FieldValue.serverTimestamp(),
+      'updateTimestamp': FieldValue.serverTimestamp(),
+    };
+    // print("whate");
+    try {
+      await _db
+          .collection('teams')
+          .doc(team.id)
+          .collection('assignments')
+          .add(assignmentData);
+      debugPrint("[add.part] Assignment added");
+    } catch (e) {
+      debugPrint("[add.part] Error with Assignment function");
+      debugPrint(e as String?);
+    }
+  }
 }
