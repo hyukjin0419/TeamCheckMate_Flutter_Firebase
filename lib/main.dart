@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:team_check_mate/AssignmentAdd.dart';
 import 'package:team_check_mate/app.dart';
 import "package:provider/provider.dart";
 import 'package:team_check_mate/home.dart';
@@ -72,7 +73,19 @@ final _router = GoRouter(
                       return ErrorWidget(ErrorWidget);
                     }
                   }),
-                )
+                ),
+                GoRoute(
+                  path: 'assginemntAdd',
+                  builder: ((context, state) {
+                    final team = state.extra as Team?;
+                    if (team != null) {
+                      return AssignmentAddPage(team: team);
+                    } else {
+                      debugPrint("No team data provided");
+                      return ErrorWidget(ErrorWidget);
+                    }
+                  }),
+                ),
               ]),
         ]),
   ],
