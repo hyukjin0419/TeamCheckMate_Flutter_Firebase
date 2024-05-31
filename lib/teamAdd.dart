@@ -14,21 +14,21 @@ class TeamAddPage extends StatefulWidget {
 class _TeamAddPageState extends State<TeamAddPage> {
   final _titlecontroller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String selectedColor = 'BAF6EF';
 
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
-    String selectedColorName = 'Red';
 
     Widget buildColorOption(
         BuildContext context, Color color, String colorName) {
       return GestureDetector(
           onTap: () {
             setState(() {
-              selectedColorName = colorName;
-              debugPrint(selectedColorName);
+              selectedColor = colorName;
+              debugPrint(selectedColor);
             });
-            // Navigator.of(context).pop();
+            Navigator.of(context).pop();
           },
           child: CircleAvatar(
             backgroundColor: color,
@@ -163,7 +163,7 @@ class _TeamAddPageState extends State<TeamAddPage> {
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                appState.addTeam(_titlecontroller.text, "FFE600");
+                appState.addTeam(_titlecontroller.text, selectedColor);
                 context.go('/home');
               }
             },
