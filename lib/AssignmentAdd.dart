@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/widget/datePicker.dart';
 
 class AssignmentAddPage extends StatefulWidget {
   const AssignmentAddPage({super.key, required this.team});
@@ -45,34 +46,38 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
                 appState.addAssignment(widget.team, _titlecontroller.text);
-                // context.go('/home');
+                context.pop();
               }
             },
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: _formKey,
-              child: TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '과제 이름을 입력하세요';
-                  }
-                  return null;
-                },
-                controller: _titlecontroller,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: '과제 이름을 입력하세요',
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                key: _formKey,
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '과제 이름을 입력하세요';
+                    }
+                    return null;
+                  },
+                  controller: _titlecontroller,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: '과제 이름을 입력하세요',
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16.0),
+            const DateTimePicker(),
+          ],
+        ),
       ),
     );
   }
