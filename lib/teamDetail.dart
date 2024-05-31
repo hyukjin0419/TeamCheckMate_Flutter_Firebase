@@ -51,9 +51,8 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                   } else if (value == 'edit') {
                     context.push("/home/teamDetail/teamEdit",
                         extra: widget.team);
-                  } else if (value == 'edit') {
-                    context.push("/home/teamDetail/teamEdit",
-                        extra: widget.team);
+                  } else if (value == 'invite') {
+                    context.push("/home/teamDetail/teamQR", extra: widget.team);
                   }
                   debugPrint(value);
                 },
