@@ -158,6 +158,7 @@ class AssignmentCard extends StatelessWidget {
     double folderWidth = screenWidth;
     // double folderHeight = folderWidth * 0.2;
     String title = assignment.title;
+    String dueDate = assignment.dueDate; // dueDate 필드 추가
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -186,7 +187,7 @@ class AssignmentCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    dueDate,
                     maxLines: 1,
                     overflow: TextOverflow.fade,
                     softWrap: false,

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/widget/datePicker.dart';
+import 'package:intl/intl.dart';
 
 class AssignmentAddPage extends StatefulWidget {
   const AssignmentAddPage({super.key, required this.team});
@@ -30,7 +31,8 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
   String _formatDateTime(DateTime date, TimeOfDay time) {
     final DateTime dateTime =
         DateTime(date.year, date.month, date.day, time.hour, time.minute);
-    return '${dateTime.toLocal()}';
+    // 초를 제외한 포맷으로 변환
+    return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
   }
 
   @override

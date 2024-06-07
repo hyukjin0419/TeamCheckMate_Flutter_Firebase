@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DateTimePicker extends StatefulWidget {
   final Function(DateTime, TimeOfDay) onDateTimeChanged;
@@ -35,6 +36,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
     }
   }
 
+  String _formatDateTime(DateTime date, TimeOfDay time) {
+    final DateTime dateTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,7 +53,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         Text(
           _selectedDate == null || _selectedTime == null
               ? 'No date and time selected!'
-              : 'Selected date and time: ${_selectedDate!.toLocal()} ${_selectedTime!.format(context)}',
+              : 'Selected date and time: ${_formatDateTime(_selectedDate!, _selectedTime!)}',
         ),
       ],
     );
