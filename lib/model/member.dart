@@ -1,33 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class User {
+class Member {
   final String id;
   final String name;
   final String email;
   final String photoUrl;
 
-  User({
+  Member({
     required this.id,
     required this.name,
     required this.email,
     required this.photoUrl,
   });
 
-  factory User.fromFirestore(DocumentSnapshot doc) {
+  factory Member.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return User(
+    return Member(
       id: doc.id,
       name: data['name'] ?? '',
       email: data['email'] ?? '',
       photoUrl: data['photoUrl'] ?? '',
     );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'name': name,
-      'email': email,
-      'photoUrl': photoUrl,
-    };
   }
 }

@@ -20,6 +20,7 @@ class Assignment {
   // final String description;
   final Timestamp timestamp;
   final Timestamp updateTimestamp;
+
   factory Assignment.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map;
     return Assignment(

@@ -60,9 +60,9 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // 한 줄에 두 개의 아이템이 표시됩니다.
-                  crossAxisSpacing: 10.0, // 가로 간격
-                  mainAxisSpacing: 10.0, // 세로 간격
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
                   childAspectRatio: 1.2,
                 ),
                 itemCount: snapshot.data!.length,

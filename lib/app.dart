@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:team_check_mate/model/assignment.dart';
-
+import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
 
 class ApplicationState extends ChangeNotifier {
@@ -91,22 +91,49 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> addTeam(String title, String color) async {
-    final Map<String, dynamic> teamData = {
+    DocumentReference teamRef = await _db.collection('teams').add({
       'title': title,
       'color': color,
       'leaderId': currentUser!.email,
       'memberIds': [currentUser!.email],
       'timestamp': FieldValue.serverTimestamp(),
       'updateTimestamp': FieldValue.serverTimestamp(),
-    };
-
+    });
     try {
-      await _db.collection('teams').add(teamData);
+      await addTeamMember(teamRef.id, currentUser!);
+
       debugPrint("[add.part] Team added");
     } catch (e) {
       debugPrint("[add.part] Error with addTeam function");
       debugPrint(e as String?);
     }
+  }
+
+  Future<void> addTeamMember(String teamId, User user) async {
+    DocumentReference memberRef = _db
+        .collection('teams')
+        .doc(teamId)
+        .collection('members')
+        .doc(user.email);
+
+    await memberRef.set({
+      'uid': user.uid,
+      'name': user.displayName ?? '',
+      'email': user.email ?? '',
+      'joinedAt': FieldValue.serverTimestamp(),
+    });
+
+    debugPrint("Member added to team: ${user.email}");
+  }
+
+  Stream<List<Member>> getMembersStream(String teamId) {
+    return _db
+        .collection('teams')
+        .doc(teamId)
+        .collection('members')
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Member.fromFirestore(doc)).toList());
   }
 
   Future<void> joinTeam(String teamId) async {

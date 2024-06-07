@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/assignment.dart';
+import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/widget/name.dart';
 
 class TeamDetailPage extends StatefulWidget {
   final Team team;
@@ -24,6 +26,14 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
     double folderHeight = folderWidth / 2.5;
 
     String color = widget.team.color;
+    Color getColorFromHex(String hexColor) {
+      hexColor = hexColor.toUpperCase().replaceAll("#", "");
+      if (hexColor.length == 6) {
+        hexColor = "FF$hexColor"; // 앞에 FF(불투명)를 추가합니다.
+      }
+      return Color(int.parse(hexColor, radix: 16));
+    }
+
     // ignore: unused_local_variable
     var appState = Provider.of<ApplicationState>(context, listen: true);
     return Scaffold(
@@ -118,6 +128,60 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                   ),
                 ),
               ],
+            ),
+          ),
+          Flexible(
+            child: StreamBuilder<List<Member>>(
+              stream: appState.getMembersStream(widget.team.id),
+              builder: ((context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Member> members = snapshot.data ?? [];
+                  return SizedBox(
+                    height: 80,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: members.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 65,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.horizontal(
+                                left: Radius.circular(25.0),
+                                right: Radius.circular(25.0),
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.horizontal(
+                                    left: Radius.circular(25.0),
+                                    right: Radius.circular(25.0),
+                                  ),
+                                  border: Border.all(
+                                    color: getColorFromHex(widget.team.color),
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      members[index].name,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return const Center(child: Text("No Assigmnets founds"));
+                }
+              }),
             ),
           ),
           Flexible(
