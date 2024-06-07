@@ -20,6 +20,14 @@
 </array>
 <!-- End of the Google Sign-in Section -->
 	<!--  -->
+	<!-- QR 코드 스캔을 위한 설정 -->
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+
+	<!-- 카메라 사용 권한 설명 -->
+	<key>NSCameraUsageDescription</key>
+	<string>QR 코드를 스캔하기 위해 카메라 접근 권한이 필요합니다.</string>
+	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -62,6 +70,7 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
+	
 	<true/>
 </dict>
 </plist>

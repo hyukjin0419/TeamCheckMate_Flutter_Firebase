@@ -13,6 +13,7 @@ import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/teamAdd.dart';
 import 'package:team_check_mate/teamDetail.dart';
 import 'package:team_check_mate/teamEdit.dart';
+import 'package:team_check_mate/teamJoin.dart';
 import 'package:team_check_mate/teamQr.dart';
 import 'firebase_options.dart';
 
@@ -39,6 +40,10 @@ final _router = GoRouter(
           GoRoute(
             path: 'teamAdd',
             builder: ((context, state) => const TeamAddPage()),
+          ),
+          GoRoute(
+            path: 'teamJoin',
+            builder: ((context, state) => const TeamJoinPage()),
           ),
           GoRoute(
               path: 'teamDetail',

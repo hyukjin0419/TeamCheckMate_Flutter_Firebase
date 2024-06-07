@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // backgroundColor: const Color.fromRGBO(231, 228, 192, 1.0),
       appBar: AppBar(
+        centerTitle: true,
         // backgroundColor: const Color.fromRGBO(231, 228, 192, 1.0),
         title: Text(
           'Team',
@@ -29,6 +30,16 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.group,
+              semanticLabel: 'join',
+              // color: Color.fromRGBO(95, 98, 9, 1.0),
+            ),
+            onPressed: () {
+              context.push("/home/teamJoin");
+            },
+          ),
           IconButton(
             icon: const Icon(
               Icons.add_box_outlined,

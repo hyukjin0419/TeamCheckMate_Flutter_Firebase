@@ -109,6 +109,33 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
+  Future<void> joinTeam(String teamId) async {
+    if (currentUser == null) return;
+
+    try {
+      DocumentReference teamDoc = _db.collection('teams').doc(teamId);
+
+      await _db.runTransaction((transaction) async {
+        DocumentSnapshot teamSnapshot = await transaction.get(teamDoc);
+
+        if (teamSnapshot.exists) {
+          List<dynamic> memberIds = teamSnapshot['memberIds'];
+
+          if (!memberIds.contains(currentUser!.email)) {
+            memberIds.add(currentUser!.email);
+
+            transaction.update(teamDoc, {'memberIds': memberIds});
+          }
+        }
+      });
+
+      debugPrint("User successfully joined the team.");
+      notifyListeners();
+    } catch (e) {
+      debugPrint("Error joining the team: $e");
+    }
+  }
+
   Future<void> deleteTeam(String teamId) async {
     try {
       await _db.collection('teams').doc(teamId).delete();
