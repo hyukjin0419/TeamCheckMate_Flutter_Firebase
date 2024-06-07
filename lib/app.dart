@@ -17,7 +17,8 @@ class ApplicationState extends ChangeNotifier {
   bool _loggedIn = false;
   // _private변수이기 대문에 getter 필요
   bool get loggedIn => _loggedIn;
-  String? uid;
+  // String? uid;
+  User? currentUser;
 
   // ignore: unused_field
   StreamSubscription<QuerySnapshot>? _teamSubscription;
@@ -69,6 +70,7 @@ class ApplicationState extends ChangeNotifier {
       // ignore: unused_local_variable
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
+      currentUser = userCredential.user;
 
       _loggedIn = true;
       notifyListeners();
@@ -80,20 +82,24 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Stream<List<Team>> getTeamsStream() {
-    return _db.collection('teams').snapshots().map(
-          (snapshot) =>
-              snapshot.docs.map((doc) => Team.fromFirestore(doc)).toList(),
-        );
+    return _db
+        .collection('teams')
+        .where('memberIds', arrayContains: currentUser!.email)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Team.fromFirestore(doc)).toList());
   }
 
   Future<void> addTeam(String title, String color) async {
     final Map<String, dynamic> teamData = {
       'title': title,
       'color': color,
+      'leaderId': currentUser!.email,
+      'memberIds': [currentUser!.email],
       'timestamp': FieldValue.serverTimestamp(),
       'updateTimestamp': FieldValue.serverTimestamp(),
     };
-    // print("whate");
+
     try {
       await _db.collection('teams').add(teamData);
       debugPrint("[add.part] Team added");
