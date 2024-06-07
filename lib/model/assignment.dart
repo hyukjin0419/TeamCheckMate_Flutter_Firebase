@@ -4,6 +4,7 @@ class Assignment {
   Assignment({
     required this.teamId,
     required this.id,
+    required this.dueDate,
     // required this.creatorUid,
     required this.title,
     // required this.description,
@@ -13,6 +14,7 @@ class Assignment {
 
   final String teamId;
   final String id;
+  final String dueDate;
   // final String creatorUid;
   final String title;
   // final String description;
@@ -23,6 +25,7 @@ class Assignment {
     return Assignment(
       teamId: '',
       id: doc.id,
+      dueDate: data['dueDate'] ?? '',
       title: data['title'] ?? '',
       timestamp: data['timestamp'] ?? '',
       updateTimestamp: data['updateTimestamp'] ?? '',

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DateTimePicker extends StatefulWidget {
-  const DateTimePicker({super.key});
+  final Function(DateTime, TimeOfDay) onDateTimeChanged;
+
+  const DateTimePicker({super.key, required this.onDateTimeChanged});
 
   @override
   _DateTimePickerState createState() => _DateTimePickerState();
@@ -28,33 +30,25 @@ class _DateTimePickerState extends State<DateTimePicker> {
           _selectedDate = pickedDate;
           _selectedTime = pickedTime;
         });
+        widget.onDateTimeChanged(pickedDate, pickedTime);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _selectedDate == null || _selectedTime == null
-                  ? 'No date and time selected!'
-                  : 'Selected date and time: ${_selectedDate!.toLocal()} ${_selectedTime!.format(context)}',
-            ),
-            const SizedBox(height: 20.0),
-            Center(
-              child: ElevatedButton(
-                onPressed: () => _selectDate(context),
-                child: const Text('Select date and time'),
-              ),
-            ),
-          ],
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () => _selectDate(context),
+          child: const Text('Select date and time'),
         ),
-      ),
+        Text(
+          _selectedDate == null || _selectedTime == null
+              ? 'No date and time selected!'
+              : 'Selected date and time: ${_selectedDate!.toLocal()} ${_selectedTime!.format(context)}',
+        ),
+      ],
     );
   }
 }

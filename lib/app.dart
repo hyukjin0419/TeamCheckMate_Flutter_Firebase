@@ -136,9 +136,10 @@ class ApplicationState extends ChangeNotifier {
             snapshot.docs.map((doc) => Assignment.fromFirestore(doc)).toList());
   }
 
-  Future<void> addAssignment(Team team, String title) async {
+  Future<void> addAssignment(Team team, String title, String dateTime) async {
     final Map<String, dynamic> assignmentData = {
       'title': title,
+      'dueDate': dateTime,
       'teamID': team.id,
       'timestamp': FieldValue.serverTimestamp(),
       'updateTimestamp': FieldValue.serverTimestamp(),

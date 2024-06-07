@@ -37,23 +37,11 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
             },
           ),
           title: Text(
-            '과제 생성하기',
+            widget.assignment!.title,
             style: GoogleFonts.poppins(
               fontSize: 22,
             ),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('확인',
-                  style: TextStyle(color: Colors.black, fontSize: 18)),
-              onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  appState.addAssignment(widget.team, _titlecontroller.text);
-                  context.pop();
-                }
-              },
-            ),
-          ],
         ),
         body: const Text("hello"));
   }

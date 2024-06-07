@@ -17,6 +17,22 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
   final _titlecontroller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
+
+  void _handleDateTimeChanged(DateTime date, TimeOfDay time) {
+    setState(() {
+      _selectedDate = date;
+      _selectedTime = time;
+    });
+  }
+
+  String _formatDateTime(DateTime date, TimeOfDay time) {
+    final DateTime dateTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    return '${dateTime.toLocal()}';
+  }
+
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
@@ -45,7 +61,18 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                appState.addAssignment(widget.team, _titlecontroller.text);
+                String dateTimeString = '';
+                debugPrint("_selectedDate $_selectedDate");
+                if (_selectedDate != null && _selectedTime != null) {
+                  dateTimeString =
+                      _formatDateTime(_selectedDate!, _selectedTime!);
+                }
+                debugPrint(dateTimeString);
+                appState.addAssignment(
+                  widget.team,
+                  _titlecontroller.text,
+                  dateTimeString,
+                );
                 context.pop();
               }
             },
@@ -75,7 +102,7 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
               ),
             ),
             const SizedBox(height: 16.0),
-            const DateTimePicker(),
+            DateTimePicker(onDateTimeChanged: _handleDateTimeChanged),
           ],
         ),
       ),
