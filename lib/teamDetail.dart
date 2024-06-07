@@ -187,12 +187,13 @@ class AssignmentCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    dueDate,
+                    "Duedate: $dueDate",
                     maxLines: 1,
                     overflow: TextOverflow.fade,
                     softWrap: false,
                     style: GoogleFonts.poppins(fontSize: 12, color: Colors.red),
                   ),
+                  const SizedBox(height: 3.0),
                   Text(
                     title,
                     maxLines: 1,
