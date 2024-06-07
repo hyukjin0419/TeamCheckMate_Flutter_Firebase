@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:team_check_mate/AssignmentAdd.dart';
+import 'package:team_check_mate/assignmentAdd.dart';
 import 'package:team_check_mate/app.dart';
 import "package:provider/provider.dart";
+import 'package:team_check_mate/assignmentDetail.dart';
 import 'package:team_check_mate/home.dart';
 import 'package:team_check_mate/login.dart';
+import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/teamAdd.dart';
 import 'package:team_check_mate/teamDetail.dart';
@@ -85,6 +87,28 @@ final _router = GoRouter(
                       return ErrorWidget(ErrorWidget);
                     }
                   }),
+                ),
+                GoRoute(
+                  path: 'assignmentDetail',
+                  builder: (context, state) {
+                    final data = state.extra as Map<String, dynamic>?;
+                    if (data != null) {
+                      final team = data['team'] as Team?;
+                      final assignment = data['assignment'] as Assignment?;
+
+                      if (team != null && assignment != null) {
+                        return AssignmentDetailPage(
+                            team: team, assignment: assignment);
+                      } else {
+                        debugPrint("No team or assignment data provided");
+                        return ErrorWidget(
+                            'No team or assignment data provided');
+                      }
+                    } else {
+                      debugPrint("No data provided");
+                      return ErrorWidget('No data provided');
+                    }
+                  },
                 ),
               ]),
         ]),

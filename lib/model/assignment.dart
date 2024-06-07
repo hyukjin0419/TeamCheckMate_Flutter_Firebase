@@ -10,11 +10,11 @@ class Assignment {
     required this.timestamp,
     required this.updateTimestamp,
   });
+
   final String teamId;
   final String id;
   // final String creatorUid;
   final String title;
-
   // final String description;
   final Timestamp timestamp;
   final Timestamp updateTimestamp;

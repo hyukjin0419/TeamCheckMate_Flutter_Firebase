@@ -69,60 +69,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// class FolderCard extends StatelessWidget {
-//   final Team team;
-//   const FolderCard({super.key, required this.team});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     double screenWidth = MediaQuery.of(context).size.width;
-//     double cardWidth = screenWidth * 0.8;
-//     double cardHeight = cardWidth / 3.5;
-
-//     return Padding(
-//       padding: const EdgeInsets.all(5.0),
-//       child: Card(
-//         clipBehavior: Clip.antiAlias,
-//         elevation: 5,
-//         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-//         // color: const Color.fromRGBO(230, 232, 133, 1.0),
-//         child: SizedBox(
-//           width: cardWidth,
-//           height: cardHeight,
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.fromLTRB(20, 20, 10, 0),
-//                 child: Text(
-//                   team.title,
-//                   style: GoogleFonts.poppins(
-//                     fontSize: 20,
-//                     fontWeight: FontWeight.bold,
-//                     // color: const Color.fromRGBO(95, 98, 9, 1.0)
-//                   ),
-//                   maxLines: 1,
-//                 ),
-//               ),
-//               Padding(
-//                 padding: const EdgeInsets.fromLTRB(20, 5, 10, 20),
-//                 child: Text(
-//                   team.id,
-//                   style: GoogleFonts.poppins(
-//                     fontSize: 15,
-//                     // color: const Color.fromRGBO(150, 148, 148, 1.0)),
-//                   ),
-//                   maxLines: 1,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class FolderCard extends StatelessWidget {
   final Team team;
   const FolderCard({super.key, required this.team});

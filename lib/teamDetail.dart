@@ -97,25 +97,6 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                         ),
                       ),
                     ]),
-            // IconButton(
-            //   icon: const Icon(
-            //     Icons.create,
-            //     semanticLabel: 'update',
-            //   ),
-            //   onPressed: () {
-            //     context.push("/home/teamDetail/teamEdit", extra: widget.team);
-            //   },
-            // ),
-            // IconButton(
-            //   icon: const Icon(
-            //     Icons.delete,
-            //     semanticLabel: 'delete',
-            //   ),
-            //   onPressed: () {
-            //     context.pop();
-            //     appState.deleteTeam(widget.team.id);
-            //   },
-            // ),
           ]),
       body: Column(
         children: [
@@ -149,7 +130,8 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                     itemCount: assignments.length,
                     itemBuilder: (BuildContext context, int index) {
                       var assignment = assignments[index];
-                      return AssignmentCard(assignment: assignment);
+                      return AssignmentCard(
+                          team: widget.team, assignment: assignment);
                     },
                   );
                 } else {
@@ -158,11 +140,6 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               }),
             ),
           )
-          // QrImageView(
-          //   data: widget.team.id,
-          //   version: QrVersions.auto,
-          //   size: 200.0,
-          // ),
         ],
       ),
     );
@@ -171,13 +148,15 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
 
 class AssignmentCard extends StatelessWidget {
   final Assignment assignment;
-  const AssignmentCard({super.key, required this.assignment});
+  final Team team;
+  const AssignmentCard(
+      {super.key, required this.team, required this.assignment});
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double folderWidth = screenWidth;
-    double folderHeight = folderWidth * 0.2;
+    // double folderHeight = folderWidth * 0.2;
     String title = assignment.title;
 
     return Padding(
@@ -185,7 +164,12 @@ class AssignmentCard extends StatelessWidget {
       child: Stack(
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              context.push(
+                "/home/teamDetail/assignmentDetail",
+                extra: {'team': team, 'assignment': assignment},
+              );
+            },
             child: SizedBox(
               width: folderWidth,
               child: Image.asset(
