@@ -269,6 +269,20 @@ class AssignmentCard extends StatelessWidget {
               ),
             ),
           ),
+          Positioned(
+            right: 10,
+            top: 25,
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                debugPrint('Vertical dots tapped!');
+              },
+              child: const SizedBox(
+                width: 25,
+                height: 40,
+              ),
+            ),
+          )
         ],
       ),
     );
