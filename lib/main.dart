@@ -6,6 +6,7 @@ import 'package:team_check_mate/assignmentAdd.dart';
 import 'package:team_check_mate/app.dart';
 import "package:provider/provider.dart";
 import 'package:team_check_mate/assignmentDetail.dart';
+import 'package:team_check_mate/assignmentEdit.dart';
 import 'package:team_check_mate/home.dart';
 import 'package:team_check_mate/login.dart';
 import 'package:team_check_mate/model/assignment.dart';
@@ -82,7 +83,7 @@ final _router = GoRouter(
                   }),
                 ),
                 GoRoute(
-                  path: 'assginemntAdd',
+                  path: 'assignmentAdd',
                   builder: ((context, state) {
                     final team = state.extra as Team?;
                     if (team != null) {
@@ -90,6 +91,28 @@ final _router = GoRouter(
                     } else {
                       debugPrint("No team data provided");
                       return ErrorWidget(ErrorWidget);
+                    }
+                  }),
+                ),
+                GoRoute(
+                  path: 'assignmentEdit',
+                  builder: ((context, state) {
+                    final data = state.extra as Map<String, dynamic>?;
+                    if (data != null) {
+                      final team = data['team'] as Team?;
+                      final assignment = data['assignment'] as Assignment?;
+
+                      if (team != null && assignment != null) {
+                        return AssignmentEditPage(
+                            team: team, assignment: assignment);
+                      } else {
+                        debugPrint("No team or assignment data provided");
+                        return ErrorWidget(
+                            'No team or assignment data provided');
+                      }
+                    } else {
+                      debugPrint("No data provided");
+                      return ErrorWidget('No data provided');
                     }
                   }),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
@@ -41,7 +42,8 @@ class BottomModal {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        // 로직 추가: 수정 작업
+                        context.push("/home/teamDetail/assignmentEdit",
+                            extra: {'team': team, 'assignment': assignment});
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,

@@ -231,4 +231,23 @@ class ApplicationState extends ChangeNotifier {
       debugPrint("[delete.part] Error deleting assignment: $e");
     }
   }
+
+  Future<void> updateAssignment(
+      String teamId, String assignmentId, String newTitle) async {
+    try {
+      await _db
+          .collection('teams')
+          .doc(teamId)
+          .collection('assignments')
+          .doc(assignmentId)
+          .update({
+        'title': newTitle,
+        // 'dueDate': newDueDate,
+        'updateTimestamp': FieldValue.serverTimestamp(), // 업데이트 시각 기록
+      });
+      debugPrint("[update.part] Assignment updated");
+    } catch (e) {
+      debugPrint("[update.part] Error updating assignment: $e");
+    }
+  }
 }
