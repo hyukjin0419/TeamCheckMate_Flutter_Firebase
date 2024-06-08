@@ -130,60 +130,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               ],
             ),
           ),
-          Flexible(
-            child: StreamBuilder<List<Member>>(
-              stream: appState.getMembersStream(widget.team.id),
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  List<Member> members = snapshot.data ?? [];
-                  return SizedBox(
-                    height: 80,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: members.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: 65,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.horizontal(
-                                left: Radius.circular(25.0),
-                                right: Radius.circular(25.0),
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.horizontal(
-                                    left: Radius.circular(25.0),
-                                    right: Radius.circular(25.0),
-                                  ),
-                                  border: Border.all(
-                                    color: getColorFromHex(widget.team.color),
-                                    width: 1.5,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      members[index].name,
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                } else {
-                  return const Center(child: Text("No Assigmnets founds"));
-                }
-              }),
-            ),
-          ),
+          NameCards(teamId: widget.team.id, teamColor: widget.team.color),
           Flexible(
             child: StreamBuilder<List<Assignment>>(
               stream: appState.getAssignmentsStream(widget.team.id),
