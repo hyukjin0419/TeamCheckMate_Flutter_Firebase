@@ -211,8 +211,8 @@ class AssignmentCard extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 10,
-            top: 25,
+            right: 1,
+            // top: 25,
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
@@ -221,8 +221,8 @@ class AssignmentCard extends StatelessWidget {
                     context, team.color, assignment, team);
               },
               child: const SizedBox(
-                width: 25,
-                height: 40,
+                width: 30,
+                height: 90,
               ),
             ),
           )
