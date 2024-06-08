@@ -8,6 +8,7 @@ import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/widget/modalBasic.dart';
 import 'package:team_check_mate/widget/name.dart';
 
 class TeamDetailPage extends StatefulWidget {
@@ -26,13 +27,6 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
     double folderHeight = folderWidth / 2.5;
 
     String color = widget.team.color;
-    Color getColorFromHex(String hexColor) {
-      hexColor = hexColor.toUpperCase().replaceAll("#", "");
-      if (hexColor.length == 6) {
-        hexColor = "FF$hexColor"; // 앞에 FF(불투명)를 추가합니다.
-      }
-      return Color(int.parse(hexColor, radix: 16));
-    }
 
     // ignore: unused_local_variable
     var appState = Provider.of<ApplicationState>(context, listen: true);
@@ -223,6 +217,7 @@ class AssignmentCard extends StatelessWidget {
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 debugPrint('Vertical dots tapped!');
+                BasicModal.showCustomDialog(context);
               },
               child: const SizedBox(
                 width: 25,
