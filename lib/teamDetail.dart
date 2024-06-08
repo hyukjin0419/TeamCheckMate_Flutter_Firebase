@@ -217,7 +217,7 @@ class AssignmentCard extends StatelessWidget {
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 debugPrint('Vertical dots tapped!');
-                BasicModal.showCustomDialog(context);
+                BottomModal.showCustomDialog(context);
               },
               child: const SizedBox(
                 width: 25,
