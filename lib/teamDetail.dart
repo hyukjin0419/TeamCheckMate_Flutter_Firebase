@@ -221,7 +221,7 @@ class AssignmentCard extends StatelessWidget {
                     context, team.color, assignment, team);
               },
               child: const SizedBox(
-                width: 30,
+                width: 40,
                 height: 90,
               ),
             ),

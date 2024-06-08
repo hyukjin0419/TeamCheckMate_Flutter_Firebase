@@ -31,7 +31,7 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
   String _formatDateTime(DateTime date, TimeOfDay time) {
     final DateTime dateTime =
         DateTime(date.year, date.month, date.day, time.hour, time.minute);
-    // 초를 제외한 포맷으로 변환
+
     return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
   }
 
