@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/widget/name.dart';
@@ -7,7 +9,8 @@ import 'package:team_check_mate/widget/name.dart';
 class BottomModal {
   static void showCustomDialog(BuildContext context, color,
       [Assignment? assignment, Team? team]) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    // double screenWidth = MediaQuery.of(context).size.width;
+    var appState = Provider.of<ApplicationState>(context, listen: false);
 
     showModalBottomSheet(
       context: context,
@@ -52,6 +55,7 @@ class BottomModal {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
+                        appState.deleteAssignment(team?.id, assignment?.id);
                         // 로직 추가: 삭제 작업
                       },
                       style: ElevatedButton.styleFrom(

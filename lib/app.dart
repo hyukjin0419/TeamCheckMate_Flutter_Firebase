@@ -218,7 +218,7 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteAssignment(String teamId, String assignmentId) async {
+  Future<void> deleteAssignment(String? teamId, String? assignmentId) async {
     try {
       await _db
           .collection('teams')
