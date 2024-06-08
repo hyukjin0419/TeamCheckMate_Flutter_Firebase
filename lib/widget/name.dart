@@ -75,7 +75,7 @@ class NameCard extends StatelessWidget {
     this.isHead = false,
   });
 
-  Color getColorFromHex(String hexColor) {
+  static Color getColorFromHex(String hexColor) {
     final int hexCode = int.parse(hexColor.replaceFirst('#', ''), radix: 16);
     return Color(0xFF000000 | hexCode);
   }
