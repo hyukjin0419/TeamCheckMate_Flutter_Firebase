@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/widget/assignmentCard.dart';
+import 'package:team_check_mate/widget/checkList.dart';
 import 'package:team_check_mate/widget/datePicker.dart';
+import 'package:team_check_mate/widget/nameCard.dart';
 
 class AssignmentDetailPage extends StatefulWidget {
   const AssignmentDetailPage(
       {super.key, required this.team, required this.assignment});
-  final Assignment? assignment;
+  final Assignment assignment;
   final Team team;
   @override
   State<AssignmentDetailPage> createState() => _AssignmentDetailPageState();
@@ -37,12 +41,20 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
             },
           ),
           title: Text(
-            widget.assignment!.title,
+            widget.assignment.title,
             style: GoogleFonts.poppins(
               fontSize: 22,
             ),
           ),
         ),
-        body: const Text("hello"));
+        body: Column(
+          children: [
+            AssignmentCard(team: widget.team, assignment: widget.assignment),
+            NameCards(teamId: widget.team.id, teamColor: widget.team.color),
+            const Flexible(
+              child: Checklist(),
+            ),
+          ],
+        ));
   }
 }

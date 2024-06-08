@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
-import 'package:team_check_mate/widget/name.dart';
+import 'package:team_check_mate/widget/nameCard.dart';
 
 class BottomModal {
   static void showCustomDialog(BuildContext context, color,
