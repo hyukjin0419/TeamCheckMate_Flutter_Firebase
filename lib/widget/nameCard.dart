@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/member.dart';
@@ -15,49 +14,47 @@ class NameCards extends StatelessWidget {
     var appState = Provider.of<ApplicationState>(context, listen: true);
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Flexible(
-        child: StreamBuilder<List<Member>>(
-          stream: appState.getMembersStream(teamId),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Member> members = snapshot.data ?? [];
-              return SizedBox(
-                height: 45,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: NameCard(
-                        colorHex: teamColor,
-                        text: '팀메이트',
-                        isHead: true,
-                      ),
+      child: StreamBuilder<List<Member>>(
+        stream: appState.getMembersStream(teamId),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Member> members = snapshot.data ?? [];
+            return SizedBox(
+              height: 45,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: NameCard(
+                      colorHex: teamColor,
+                      text: '팀메이트',
+                      isHead: true,
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: members.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: SizedBox(
-                              child: NameCard(
-                                colorHex: teamColor,
-                                text: members[index].name,
-                              ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: members.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: SizedBox(
+                            child: NameCard(
+                              colorHex: teamColor,
+                              text: members[index].name,
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                  ],
-                ),
-              );
-            } else {
-              return const Center(child: Text("No members found"));
-            }
-          },
-        ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const Center(child: Text("No members found"));
+          }
+        },
       ),
     );
   }

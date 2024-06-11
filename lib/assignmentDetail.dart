@@ -51,9 +51,9 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
           children: [
             AssignmentCard(team: widget.team, assignment: widget.assignment),
             NameCards(teamId: widget.team.id, teamColor: widget.team.color),
-            const Flexible(
-              child: Checklist(),
-            ),
+            // const Flexible(
+            //     // child: Checklist(),
+            //     ),
           ],
         ));
   }

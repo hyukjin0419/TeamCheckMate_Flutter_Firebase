@@ -125,7 +125,9 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               ],
             ),
           ),
-          NameCards(teamId: widget.team.id, teamColor: widget.team.color),
+          Flexible(
+              child: NameCards(
+                  teamId: widget.team.id, teamColor: widget.team.color)),
           Flexible(
             child: StreamBuilder<List<Assignment>>(
               stream: appState.getAssignmentsStream(widget.team.id),
