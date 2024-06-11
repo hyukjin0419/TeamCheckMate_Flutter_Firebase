@@ -306,4 +306,30 @@ class ApplicationState extends ChangeNotifier {
       debugPrint("Error deleting checklist item: $e");
     }
   }
+
+  Future<void> addChecklistItem(String teamId, String assignmentId,
+      String memberId, String content) async {
+    final Map<String, dynamic> checklistData = {
+      'content': content,
+      'isChecked': false,
+      'timestamp': FieldValue.serverTimestamp(),
+      'updateTimestamp': FieldValue.serverTimestamp(),
+    };
+
+    try {
+      await _db
+          .collection('teams')
+          .doc(teamId)
+          .collection('assignments')
+          .doc(assignmentId)
+          .collection('members')
+          .doc(memberId)
+          .collection('checklist')
+          .add(checklistData);
+      debugPrint("[add.part] Checklist item added");
+    } catch (e) {
+      debugPrint("[add.part] Error with addChecklistItem function");
+      debugPrint(e as String?);
+    }
+  }
 }

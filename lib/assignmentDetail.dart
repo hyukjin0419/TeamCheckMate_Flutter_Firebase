@@ -9,8 +9,8 @@ import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/checklistItem.dart';
 import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/widget/%08checklistTile.dart';
 import 'package:team_check_mate/widget/assignmentCard.dart';
-import 'package:team_check_mate/widget/checkList.dart';
 import 'package:team_check_mate/widget/datePicker.dart';
 import 'package:team_check_mate/widget/nameCard.dart';
 
@@ -26,6 +26,14 @@ class AssignmentDetailPage extends StatefulWidget {
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   final _titlecontroller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  final Map<String, bool> _editingMembers = {};
+
+  void _toggleEditing(String memberId) {
+    setState(() {
+      _editingMembers[memberId] = !_editingMembers[memberId]!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +73,9 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                       itemCount: members.length,
                       itemBuilder: (context, index) {
                         Member member = members[index];
+                        _editingMembers.putIfAbsent(member.id, () => false);
                         return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(10.0),
@@ -75,8 +85,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      debugPrint(
-                                          "${widget.team.id} ${widget.assignment.id} ${member.id}");
+                                      _toggleEditing(member.id);
                                     },
                                     child: IntrinsicWidth(
                                       child: NameCardWithBtn(
@@ -88,7 +97,44 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                 ),
                               ),
                             ),
-                            //체크리스트
+                            // 텍스트 필드 표시
+                            if (_editingMembers[member.id]!)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: TextFormField(
+                                  controller: _titlecontroller,
+                                  onFieldSubmitted: (value) {
+                                    if (value.isNotEmpty) {
+                                      appState.addChecklistItem(
+                                        widget.team.id,
+                                        widget.assignment.id,
+                                        member.id,
+                                        value,
+                                      );
+                                      _toggleEditing(member.id);
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: 'Add Item',
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.check),
+                                      onPressed: () {
+                                        if (_titlecontroller.text.isNotEmpty) {
+                                          appState.addChecklistItem(
+                                            widget.team.id,
+                                            widget.assignment.id,
+                                            member.id,
+                                            _titlecontroller.text,
+                                          );
+                                          _toggleEditing(member.id);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            // 체크리스트
                             StreamBuilder<List<ChecklistItem>>(
                               stream: appState.getChecklistStream(
                                   widget.team.id,
