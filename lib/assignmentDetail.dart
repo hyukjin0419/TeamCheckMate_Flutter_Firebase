@@ -112,6 +112,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                         teamId: widget.team.id,
                                         assignmentId: widget.assignment.id,
                                         memberEmail: member.id,
+                                        colorHex: widget.team.color,
                                       );
                                     },
                                   );
