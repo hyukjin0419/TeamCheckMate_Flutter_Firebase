@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_check_mate/widget/nameCard.dart';
 
 class ChecklistItem extends StatelessWidget {
   final String title;
@@ -70,16 +71,20 @@ class _ChecklistState extends State<Checklist> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _items.length,
-      itemBuilder: (context, index) {
-        return ChecklistItem(
-          title: _items[index]['title'],
-          isChecked: _items[index]['isChecked'],
-          onChanged: (value) => _handleCheckboxChange(index, value),
-          onOptionsTap: () => _handleOptionsTap(index),
-        );
-      },
+    return Column(
+      children: [
+        ListView.builder(
+          itemCount: _items.length,
+          itemBuilder: (context, index) {
+            return ChecklistItem(
+              title: _items[index]['title'],
+              isChecked: _items[index]['isChecked'],
+              onChanged: (value) => _handleCheckboxChange(index, value),
+              onOptionsTap: () => _handleOptionsTap(index),
+            );
+          },
+        ),
+      ],
     );
   }
 }
