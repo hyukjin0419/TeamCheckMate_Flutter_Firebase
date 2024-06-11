@@ -8,14 +8,14 @@ class ChecklistTile extends StatelessWidget {
   final ChecklistItem item;
   final String teamId;
   final String assignmentId;
-  final String memberId;
+  final String memberEmail;
 
   const ChecklistTile({
     super.key,
     required this.item,
     required this.teamId,
     required this.assignmentId,
-    required this.memberId,
+    required this.memberEmail,
   });
 
   @override
@@ -29,7 +29,7 @@ class ChecklistTile extends StatelessWidget {
           appState.updateChecklistItem(
             teamId,
             assignmentId,
-            memberId,
+            memberEmail,
             item.id,
             {'isChecked': value},
           );
@@ -58,13 +58,13 @@ class ChecklistTile extends StatelessWidget {
                       leading: const Icon(Icons.delete),
                       title: const Text('Delete'),
                       onTap: () {
-                        appState.deleteChecklistItem(
-                          teamId,
-                          assignmentId,
-                          memberId,
-                          item.id,
-                        );
-                        Navigator.pop(context);
+                        // appState.deleteChecklistItem(
+                        //   teamId,
+                        //   assignmentId,
+                        //   memberId,
+                        //   item.id,
+                        // );
+                        // Navigator.pop(context);
                       },
                     ),
                   ],

@@ -55,6 +55,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
             AssignmentCard(team: widget.team, assignment: widget.assignment),
             NameCards(teamId: widget.team.id, teamColor: widget.team.color),
             Expanded(
+              //이름 - 체크리스트
               child: StreamBuilder<List<Member>>(
                 stream: appState.getMembersStream(widget.team.id),
                 builder: (context, memberSnapshot) {
@@ -72,56 +73,55 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
                                   padding: const EdgeInsets.all(4.0),
-                                  child: IntrinsicWidth(
-                                    child: NameCardWithBtn(
-                                      text: member.name,
-                                      colorHex: widget.team.color,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      debugPrint(
+                                          "${widget.team.id} ${widget.assignment.id} ${member.id}");
+                                    },
+                                    child: IntrinsicWidth(
+                                      child: NameCardWithBtn(
+                                        text: member.name,
+                                        colorHex: widget.team.color,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            // StreamBuilder<List<ChecklistItem>>(
-                            //   stream: appState.getChecklistStream(
-                            //       widget.team.id,
-                            //       widget.assignment.id,
-                            //       member.email),
-                            //   builder: (context, checklistSnapshot) {
-                            //     if (checklistSnapshot.hasData) {
-                            //       List<ChecklistItem> checklist =
-                            //           checklistSnapshot.data!;
-                            //       return ListView.builder(
-                            //         physics:
-                            //             const NeverScrollableScrollPhysics(),
-                            //         shrinkWrap: true,
-                            //         itemCount: checklist.length,
-                            //         itemBuilder: (context, checklistIndex) {
-                            //           ChecklistItem item =
-                            //               checklist[checklistIndex];
-                            //           return ListTile(
-                            //             title: Text(item.content),
-                            //             leading: Checkbox(
-                            //               value: item.isChecked,
-                            //               onChanged: (bool? newValue) {
-                            //                 appState.updateChecklistItem(
-                            //                   widget.team.id,
-                            //                   widget.assignment.id,
-                            //                   member.email,
-                            //                   item.id,
-                            //                   {'isChecked': newValue},
-                            //                 );
-                            //               },
-                            //             ),
-                            //           );
-                            //         },
-                            //       );
-                            //     } else if (checklistSnapshot.hasError) {
-                            //       return Text(
-                            //           'Error: ${checklistSnapshot.error}');
-                            //     }
-                            //     return const CircularProgressIndicator();
-                            //   },
-                            // ),
+                            //체크리스트
+                            StreamBuilder<List<ChecklistItem>>(
+                              stream: appState.getChecklistStream(
+                                  widget.team.id,
+                                  widget.assignment.id,
+                                  member.id),
+                              builder: (context, checklistSnapshot) {
+                                if (checklistSnapshot.hasData) {
+                                  List<ChecklistItem> checklist =
+                                      checklistSnapshot.data!;
+                                  return ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: checklist.length,
+                                    itemBuilder: (context, checklistIndex) {
+                                      ChecklistItem item =
+                                          checklist[checklistIndex];
+
+                                      return ChecklistTile(
+                                        item: item,
+                                        teamId: widget.team.id,
+                                        assignmentId: widget.assignment.id,
+                                        memberEmail: member.id,
+                                      );
+                                    },
+                                  );
+                                } else if (checklistSnapshot.hasError) {
+                                  return Text(
+                                      'Error: ${checklistSnapshot.error}');
+                                }
+                                return const CircularProgressIndicator();
+                              },
+                            ),
                           ],
                         );
                       },

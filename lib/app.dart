@@ -256,14 +256,14 @@ class ApplicationState extends ChangeNotifier {
 
   //-------------------------------Checklist----------------------------------------
   Stream<List<ChecklistItem>> getChecklistStream(
-      String teamId, String assignmentId, String memberId) {
+      String teamId, String assignmentId, String memberEmail) {
     return _db
         .collection('teams')
         .doc(teamId)
         .collection('assignments')
         .doc(assignmentId)
         .collection('members')
-        .doc(memberId)
+        .doc(memberEmail)
         .collection('checklist')
         .snapshots()
         .map((snapshot) => snapshot.docs
