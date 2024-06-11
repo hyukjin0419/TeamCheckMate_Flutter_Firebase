@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:team_check_mate/model/assignment.dart';
+import 'package:team_check_mate/model/checklistItem.dart';
 import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
 
@@ -81,6 +82,7 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
+//-----------------------------Team & Member------------------------------------
   Stream<List<Team>> getTeamsStream() {
     return _db
         .collection('teams')
@@ -186,6 +188,7 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
+// ------------------------Assignment---------------------------------
   Stream<List<Assignment>> getAssignmentsStream(String teamId) {
     return _db
         .collection('teams')
@@ -248,6 +251,59 @@ class ApplicationState extends ChangeNotifier {
       debugPrint("[update.part] Assignment updated");
     } catch (e) {
       debugPrint("[update.part] Error updating assignment: $e");
+    }
+  }
+
+  //-------------------------------Checklist----------------------------------------
+  Stream<List<ChecklistItem>> getChecklistStream(
+      String teamId, String assignmentId, String memberId) {
+    return _db
+        .collection('teams')
+        .doc(teamId)
+        .collection('assignments')
+        .doc(assignmentId)
+        .collection('members')
+        .doc(memberId)
+        .collection('checklist')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => ChecklistItem.fromFirestore(doc))
+            .toList());
+  }
+
+  Future<void> updateChecklistItem(String teamId, String assignmentId,
+      String memberEmail, String itemId, Map<String, dynamic> data) async {
+    try {
+      await _db
+          .collection('teams')
+          .doc(teamId)
+          .collection('assignments')
+          .doc(assignmentId)
+          .collection('members')
+          .doc(memberEmail)
+          .collection('checklist')
+          .doc(itemId)
+          .update(data);
+    } catch (e) {
+      debugPrint("Error updating checklist item: $e");
+    }
+  }
+
+  Future<void> deleteChecklistItem(String teamId, String assignmentId,
+      String memberEmail, String itemId) async {
+    try {
+      await _db
+          .collection('teams')
+          .doc(teamId)
+          .collection('assignments')
+          .doc(assignmentId)
+          .collection('members')
+          .doc(memberEmail)
+          .collection('checklist')
+          .doc(itemId)
+          .delete();
+    } catch (e) {
+      debugPrint("Error deleting checklist item: $e");
     }
   }
 }

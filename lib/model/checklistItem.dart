@@ -5,7 +5,7 @@ class ChecklistItem {
     required this.id,
     required this.teamId,
     required this.assignmentId,
-    required this.memberId,
+    required this.memberEmail,
     required this.isChecked,
     required this.content,
     required this.timestamp,
@@ -14,7 +14,7 @@ class ChecklistItem {
   String id;
   String teamId;
   String assignmentId;
-  String memberId;
+  String memberEmail;
   bool isChecked;
   String content;
   Timestamp timestamp;
@@ -26,7 +26,7 @@ class ChecklistItem {
     return ChecklistItem(
       teamId: '',
       assignmentId: '',
-      memberId: '',
+      memberEmail: '',
       id: doc.id,
       isChecked: data['isChecked'] ?? false,
       content: data['content'] ?? '',
@@ -37,7 +37,7 @@ class ChecklistItem {
 
   Map<String, dynamic> toFirestore() {
     return {
-      'memberId': memberId,
+      'memberId': memberEmail,
       'isChecked': isChecked,
       'content': content,
     };

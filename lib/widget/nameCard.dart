@@ -110,3 +110,62 @@ class NameCard extends StatelessWidget {
     );
   }
 }
+
+class NameCardWithBtn extends StatelessWidget {
+  final String text;
+  final String colorHex;
+  final bool isHead;
+
+  const NameCardWithBtn({
+    super.key,
+    required this.text,
+    required this.colorHex,
+    this.isHead = false,
+  });
+
+  static Color getColorFromHex(String hexColor) {
+    final int hexCode = int.parse(hexColor.replaceFirst('#', ''), radix: 16);
+    return Color(0xFF000000 | hexCode);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.horizontal(
+        left: Radius.circular(20.0),
+        right: Radius.circular(20.0),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: isHead ? getColorFromHex(colorHex) : Colors.white,
+          border: isHead
+              ? null
+              : Border.all(
+                  color: getColorFromHex(colorHex),
+                  width: 1.5,
+                ),
+          borderRadius: const BorderRadius.horizontal(
+            left: Radius.circular(20.0),
+            right: Radius.circular(20.0),
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Center(
+          child: Row(
+            children: [
+              Text(
+                text,
+                style: const TextStyle(),
+                maxLines: 1,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 4.0),
+                child: Icon(Icons.add_circle),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
