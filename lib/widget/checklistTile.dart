@@ -1,3 +1,8 @@
+// checklisttile의 원형을 다시 잡자.
+//아니다 그냥 입력 widget을 하나 더 만들자
+//거기에는 teamId, assignmentId, memberEmail, colorHex만 들어가면 된다
+//ㅇㅋ?
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
@@ -75,12 +80,6 @@ class _ChecklistTileState extends State<ChecklistTile> {
     });
   }
 
-  void _toggleCreating() {
-    setState(() {
-      currentState = ChecklistTileState.creating;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
@@ -119,20 +118,6 @@ class _ChecklistTileState extends State<ChecklistTile> {
               //update tkdxo
             } else if (currentState == ChecklistTileState.editing) {
               return TextFormField(
-                controller: _controller,
-                onFieldSubmitted: (_) => _submitForm(),
-                decoration: InputDecoration(
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: getColorFromHex(widget.colorHex), width: 1.0),
-                  ),
-                ),
-              );
-            } else {
-              TextFormField(
                 controller: _controller,
                 onFieldSubmitted: (_) => _submitForm(),
                 decoration: InputDecoration(
