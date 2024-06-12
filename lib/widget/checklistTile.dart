@@ -1,8 +1,3 @@
-// checklisttile의 원형을 다시 잡자.
-//아니다 그냥 입력 widget을 하나 더 만들자
-//거기에는 teamId, assignmentId, memberEmail, colorHex만 들어가면 된다
-//ㅇㅋ?
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
@@ -34,29 +29,38 @@ class ChecklistTile extends StatefulWidget {
 
 class _ChecklistTileState extends State<ChecklistTile> {
   late ChecklistTileState currentState;
-  TextEditingController? _controller;
+  late TextEditingController _controller;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     currentState = widget.initialState;
     _controller = TextEditingController(text: widget.item.content);
+    _focusNode = FocusNode();
+
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus && currentState == ChecklistTileState.editing) {
+        _submitForm();
+      }
+    });
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   void _submitForm() {
-    if (_controller!.text.isNotEmpty) {
+    if (_controller.text.isNotEmpty) {
       if (currentState == ChecklistTileState.creating) {
         Provider.of<ApplicationState>(context, listen: false).addChecklistItem(
           widget.teamId,
           widget.assignmentId,
           widget.memberEmail,
-          _controller!.text,
+          _controller.text,
         );
       } else {
         Provider.of<ApplicationState>(context, listen: false)
@@ -65,7 +69,7 @@ class _ChecklistTileState extends State<ChecklistTile> {
           widget.assignmentId,
           widget.memberEmail,
           widget.item.id,
-          {'content': _controller!.text},
+          {'content': _controller.text},
         );
       }
       setState(() {
@@ -77,13 +81,20 @@ class _ChecklistTileState extends State<ChecklistTile> {
   void _toggleEditing() {
     setState(() {
       currentState = ChecklistTileState.editing;
+      FocusScope.of(context).requestFocus(_focusNode);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
-    return ListTile(
+    return GestureDetector(
+      onTap: () {
+        if (currentState == ChecklistTileState.basic) {
+          _toggleEditing();
+        }
+      },
+      child: ListTile(
         leading: Checkbox(
           fillColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
@@ -105,17 +116,11 @@ class _ChecklistTileState extends State<ChecklistTile> {
             );
           },
         ),
-        //title
-        title: () {
-          //기본 상태
-          if (currentState == ChecklistTileState.basic) {
-            return Text(widget.item.content);
-            //update tkdxo
-          } else if (currentState == ChecklistTileState.editing) {
-            return SizedBox(
-              height: 20,
-              child: TextFormField(
+        title: currentState == ChecklistTileState.basic
+            ? Text(widget.item.content)
+            : TextFormField(
                 controller: _controller,
+                focusNode: _focusNode,
                 onFieldSubmitted: (_) => _submitForm(),
                 decoration: InputDecoration(
                   enabledBorder: const UnderlineInputBorder(
@@ -127,9 +132,6 @@ class _ChecklistTileState extends State<ChecklistTile> {
                   ),
                 ),
               ),
-            );
-          }
-        }(),
         trailing: IconButton(
           icon: const Icon(Icons.more_horiz),
           onPressed: () {
@@ -167,7 +169,9 @@ class _ChecklistTileState extends State<ChecklistTile> {
               },
             );
           },
-        ));
+        ),
+      ),
+    );
   }
 
   Color getColorFromHex(String hexColor) {

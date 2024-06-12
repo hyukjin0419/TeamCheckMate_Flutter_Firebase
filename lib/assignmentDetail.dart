@@ -42,6 +42,16 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
     });
   }
 
+  List<ChecklistItem> _sortChecklistItems(List<ChecklistItem> items) {
+    items.sort((a, b) {
+      if (a.isChecked != b.isChecked) {
+        return a.isChecked ? 1 : -1;
+      }
+      return a.timestamp.compareTo(b.timestamp);
+    });
+    return items;
+  }
+
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
@@ -120,6 +130,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                 if (checklistSnapshot.hasData) {
                                   List<ChecklistItem> checklist =
                                       checklistSnapshot.data!;
+                                  checklist = _sortChecklistItems(checklist);
                                   return ListView.builder(
                                     physics:
                                         const NeverScrollableScrollPhysics(),
