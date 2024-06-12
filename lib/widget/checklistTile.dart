@@ -158,7 +158,12 @@ class _ChecklistTileState extends State<ChecklistTile> {
                           leading: const Icon(Icons.delete),
                           title: const Text('Delete'),
                           onTap: () {
-                            // Delete functionality
+                            appState.deleteChecklistItem(
+                                widget.teamId,
+                                widget.assignmentId,
+                                widget.memberEmail,
+                                widget.item.id);
+                            Navigator.pop(context);
                           },
                         ),
                       ],
