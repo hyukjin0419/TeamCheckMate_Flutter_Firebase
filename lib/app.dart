@@ -329,7 +329,6 @@ class ApplicationState extends ChangeNotifier {
       debugPrint("[add.part] Checklist item added");
     } catch (e) {
       debugPrint("[add.part] Error with addChecklistItem function");
-      debugPrint(e as String?);
     }
   }
 }

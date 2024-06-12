@@ -11,7 +11,7 @@ import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/widget/%08checklistTile.dart';
 import 'package:team_check_mate/widget/assignmentCard.dart';
-import 'package:team_check_mate/widget/datePicker.dart';
+import 'package:team_check_mate/widget/checklistInput.dart';
 import 'package:team_check_mate/widget/nameCard.dart';
 
 class AssignmentDetailPage extends StatefulWidget {
@@ -24,6 +24,20 @@ class AssignmentDetailPage extends StatefulWidget {
 }
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
+  final Map<String, bool> _showTextFormField = {};
+
+  void _toggleTextFormField(String memberId) {
+    setState(() {
+      _showTextFormField[memberId] = !_showTextFormField[memberId]!;
+    });
+  }
+
+  void _hideTextFormField(String memberId) {
+    setState(() {
+      _showTextFormField[memberId] = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
@@ -58,6 +72,11 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                 builder: (context, memberSnapshot) {
                   if (memberSnapshot.hasData) {
                     List<Member> members = memberSnapshot.data!;
+                    for (var member in members) {
+                      if (!_showTextFormField.containsKey(member.id)) {
+                        _showTextFormField[member.id] = false;
+                      }
+                    }
                     return ListView.builder(
                       itemCount: members.length,
                       itemBuilder: (context, index) {
@@ -72,7 +91,9 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      _toggleTextFormField(member.id);
+                                    },
                                     child: IntrinsicWidth(
                                       child: NameCardWithBtn(
                                         text: member.name,
@@ -83,6 +104,14 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                 ),
                               ),
                             ),
+                            if (_showTextFormField[member.id]!)
+                              CheckListInput(
+                                  teamId: widget.team.id,
+                                  assignmentId: widget.assignment.id,
+                                  memberEmail: member.email,
+                                  colorHex: widget.team.color,
+                                  onSubmitted: () =>
+                                      _hideTextFormField(member.id)),
                             StreamBuilder<List<ChecklistItem>>(
                               stream: appState.getChecklistStream(
                                   widget.team.id,
