@@ -83,97 +83,91 @@ class _ChecklistTileState extends State<ChecklistTile> {
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
-    return GestureDetector(
-      onTap: () {
-        _submitForm();
-      },
-      child: ListTile(
-          leading: Checkbox(
-            fillColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.selected)) {
-                  return getColorFromHex(widget.colorHex);
-                }
-                return Colors.white;
-              },
-            ),
-            side:
-                BorderSide(color: getColorFromHex(widget.colorHex), width: 2.0),
-            value: widget.item.isChecked,
-            onChanged: (bool? value) {
-              appState.updateChecklistItem(
-                widget.teamId,
-                widget.assignmentId,
-                widget.memberEmail,
-                widget.item.id,
-                {'isChecked': value},
-              );
+    return ListTile(
+        leading: Checkbox(
+          fillColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.selected)) {
+                return getColorFromHex(widget.colorHex);
+              }
+              return Colors.white;
             },
           ),
-          //title
-          title: () {
-            //기본 상태
-            if (currentState == ChecklistTileState.basic) {
-              return Text(widget.item.content);
-              //update tkdxo
-            } else if (currentState == ChecklistTileState.editing) {
-              return SizedBox(
-                height: 20,
-                child: TextFormField(
-                  controller: _controller,
-                  onFieldSubmitted: (_) => _submitForm(),
-                  decoration: InputDecoration(
-                    enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: getColorFromHex(widget.colorHex), width: 1.0),
-                    ),
+          side: BorderSide(color: getColorFromHex(widget.colorHex), width: 2.0),
+          value: widget.item.isChecked,
+          onChanged: (bool? value) {
+            appState.updateChecklistItem(
+              widget.teamId,
+              widget.assignmentId,
+              widget.memberEmail,
+              widget.item.id,
+              {'isChecked': value},
+            );
+          },
+        ),
+        //title
+        title: () {
+          //기본 상태
+          if (currentState == ChecklistTileState.basic) {
+            return Text(widget.item.content);
+            //update tkdxo
+          } else if (currentState == ChecklistTileState.editing) {
+            return SizedBox(
+              height: 20,
+              child: TextFormField(
+                controller: _controller,
+                onFieldSubmitted: (_) => _submitForm(),
+                decoration: InputDecoration(
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: getColorFromHex(widget.colorHex), width: 1.0),
                   ),
                 ),
-              );
-            }
-          }(),
-          trailing: IconButton(
-            icon: const Icon(Icons.more_horiz),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          leading: const Icon(Icons.edit),
-                          title: const Text('Edit'),
-                          onTap: () {
-                            Navigator.pop(context);
-                            _toggleEditing();
-                          },
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.delete),
-                          title: const Text('Delete'),
-                          onTap: () {
-                            appState.deleteChecklistItem(
-                                widget.teamId,
-                                widget.assignmentId,
-                                widget.memberEmail,
-                                widget.item.id);
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          )),
-    );
+              ),
+            );
+          }
+        }(),
+        trailing: IconButton(
+          icon: const Icon(Icons.more_horiz),
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        leading: const Icon(Icons.edit),
+                        title: const Text('Edit'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          _toggleEditing();
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.delete),
+                        title: const Text('Delete'),
+                        onTap: () {
+                          appState.deleteChecklistItem(
+                              widget.teamId,
+                              widget.assignmentId,
+                              widget.memberEmail,
+                              widget.item.id);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ));
   }
 
   Color getColorFromHex(String hexColor) {
