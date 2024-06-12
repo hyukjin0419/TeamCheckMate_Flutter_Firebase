@@ -24,16 +24,22 @@ class CheckListInput extends StatefulWidget {
 
 class _CheckListInputState extends State<CheckListInput> {
   late TextEditingController _controller;
+  late FocusNode _focusNode; // FocusNode 추가
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _focusNode = FocusNode();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus(); // 위젯이 빌드된 후 포커스 요청
+    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -69,6 +75,7 @@ class _CheckListInputState extends State<CheckListInput> {
       ),
       title: TextFormField(
         controller: _controller,
+        focusNode: _focusNode,
         onFieldSubmitted: (_) => _submitForm(),
         decoration: InputDecoration(
           enabledBorder: const UnderlineInputBorder(

@@ -24,17 +24,21 @@ class AssignmentDetailPage extends StatefulWidget {
 }
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
-  final Map<String, bool> _showTextFormField = {};
+  String? _activeMemberId; // 활성화된 멤버 ID를 저장
 
   void _toggleTextFormField(String memberId) {
     setState(() {
-      _showTextFormField[memberId] = !_showTextFormField[memberId]!;
+      if (_activeMemberId == memberId) {
+        _activeMemberId = null; // 동일한 멤버를 클릭하면 비활성화
+      } else {
+        _activeMemberId = memberId; // 다른 멤버를 클릭하면 해당 멤버 활성화
+      }
     });
   }
 
-  void _hideTextFormField(String memberId) {
+  void _hideTextFormField() {
     setState(() {
-      _showTextFormField[memberId] = false;
+      _activeMemberId = null; // 입력 완료 후 비활성화
     });
   }
 
@@ -72,11 +76,6 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                 builder: (context, memberSnapshot) {
                   if (memberSnapshot.hasData) {
                     List<Member> members = memberSnapshot.data!;
-                    for (var member in members) {
-                      if (!_showTextFormField.containsKey(member.id)) {
-                        _showTextFormField[member.id] = false;
-                      }
-                    }
                     return ListView.builder(
                       itemCount: members.length,
                       itemBuilder: (context, index) {
@@ -104,14 +103,14 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                 ),
                               ),
                             ),
-                            if (_showTextFormField[member.id]!)
+                            if (_activeMemberId == member.id)
                               CheckListInput(
-                                  teamId: widget.team.id,
-                                  assignmentId: widget.assignment.id,
-                                  memberEmail: member.email,
-                                  colorHex: widget.team.color,
-                                  onSubmitted: () =>
-                                      _hideTextFormField(member.id)),
+                                teamId: widget.team.id,
+                                assignmentId: widget.assignment.id,
+                                memberEmail: member.id,
+                                colorHex: widget.team.color,
+                                onSubmitted: _hideTextFormField,
+                              ),
                             StreamBuilder<List<ChecklistItem>>(
                               stream: appState.getChecklistStream(
                                   widget.team.id,
