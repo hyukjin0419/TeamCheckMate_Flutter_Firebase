@@ -73,17 +73,20 @@ class _CheckListInputState extends State<CheckListInput> {
         value: false,
         onChanged: (bool? value) {},
       ),
-      title: TextFormField(
-        controller: _controller,
-        focusNode: _focusNode,
-        onFieldSubmitted: (_) => _submitForm(),
-        decoration: InputDecoration(
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 1.0),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: getColorFromHex(widget.colorHex), width: 1.0),
+      title: SizedBox(
+        height: 20,
+        child: TextFormField(
+          controller: _controller,
+          focusNode: _focusNode,
+          onFieldSubmitted: (_) => _submitForm(),
+          decoration: InputDecoration(
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey, width: 1.0),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                  color: getColorFromHex(widget.colorHex), width: 1.0),
+            ),
           ),
         ),
       ),

@@ -117,16 +117,19 @@ class _ChecklistTileState extends State<ChecklistTile> {
               return Text(widget.item.content);
               //update tkdxo
             } else if (currentState == ChecklistTileState.editing) {
-              return TextFormField(
-                controller: _controller,
-                onFieldSubmitted: (_) => _submitForm(),
-                decoration: InputDecoration(
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: getColorFromHex(widget.colorHex), width: 1.0),
+              return SizedBox(
+                height: 20,
+                child: TextFormField(
+                  controller: _controller,
+                  onFieldSubmitted: (_) => _submitForm(),
+                  decoration: InputDecoration(
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: getColorFromHex(widget.colorHex), width: 1.0),
+                    ),
                   ),
                 ),
               );
