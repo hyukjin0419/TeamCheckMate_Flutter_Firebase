@@ -308,8 +308,11 @@ class ApplicationState extends ChangeNotifier {
   }
 
   Future<void> addChecklistItem(String teamId, String assignmentId,
-      String memberId, String content) async {
+      String memberEmail, String content) async {
     final Map<String, dynamic> checklistData = {
+      'teamId': teamId,
+      'assignmentId': assignmentId,
+      'memberEmail': memberEmail,
       'content': content,
       'isChecked': false,
       'timestamp': FieldValue.serverTimestamp(),
@@ -323,7 +326,7 @@ class ApplicationState extends ChangeNotifier {
           .collection('assignments')
           .doc(assignmentId)
           .collection('members')
-          .doc(memberId)
+          .doc(memberEmail)
           .collection('checklist')
           .add(checklistData);
       debugPrint("[add.part] Checklist item added");
@@ -333,36 +336,32 @@ class ApplicationState extends ChangeNotifier {
   }
 
   // --------------------------Individual Page----------
-  Stream<List<ChecklistItem>> getUserChecklistItems(String userEmail) async* {
+  Stream<List<ChecklistItem>> getIndividualChecklistStream(
+      String teamId, String userEmail) async* {
     List<ChecklistItem> allItems = [];
 
-    // 모든 팀 가져오기
-    var teamsSnapshot = await _db.collection('teams').get();
-    for (var teamDoc in teamsSnapshot.docs) {
-      // 모든 과제 가져오기
-      var assignmentsSnapshot = await _db
+    var assignmentsSnapshot = await FirebaseFirestore.instance
+        .collection('teams')
+        .doc(teamId)
+        .collection('assignments')
+        .get();
+    for (var assignmentDoc in assignmentsSnapshot.docs) {
+      var checklistSnapshot = FirebaseFirestore.instance
           .collection('teams')
-          .doc(teamDoc.id)
+          .doc(teamId)
           .collection('assignments')
-          .get();
-      for (var assignmentDoc in assignmentsSnapshot.docs) {
-        // 해당 사용자의 체크리스트 항목 가져오기
-        var checklistSnapshot = _db
-            .collection('teams')
-            .doc(teamDoc.id)
-            .collection('assignments')
-            .doc(assignmentDoc.id)
-            .collection('members')
-            .doc(userEmail)
-            .collection('checklist')
-            .snapshots();
+          .doc(assignmentDoc.id)
+          .collection('members')
+          .doc(userEmail)
+          .collection('checklist')
+          .snapshots();
 
-        await for (var snapshot in checklistSnapshot) {
-          for (var doc in snapshot.docs) {
-            allItems.add(ChecklistItem.fromFirestore(doc));
-          }
-          yield allItems;
+      await for (var snapshot in checklistSnapshot) {
+        allItems.clear();
+        for (var doc in snapshot.docs) {
+          allItems.add(ChecklistItem.fromFirestore(doc));
         }
+        yield allItems;
       }
     }
   }
