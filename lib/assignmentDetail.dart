@@ -25,6 +25,8 @@ class AssignmentDetailPage extends StatefulWidget {
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   String? _activeMemberId; // 활성화된 멤버 ID를 저장
+  final Map<String, List<ChecklistItem>> _cachedChecklistItems =
+      {}; // 캐시된 체크리스트 아이템
 
   void _toggleTextFormField(String memberId) {
     setState(() {
@@ -127,33 +129,37 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                   widget.assignment.id,
                                   member.id),
                               builder: (context, checklistSnapshot) {
+                                String cacheKey =
+                                    '${widget.team.id}-${widget.assignment.id}-${member.id}';
                                 if (checklistSnapshot.hasData) {
                                   List<ChecklistItem> checklist =
                                       checklistSnapshot.data!;
                                   checklist = _sortChecklistItems(checklist);
-                                  return ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: checklist.length,
-                                    itemBuilder: (context, checklistIndex) {
-                                      ChecklistItem item =
-                                          checklist[checklistIndex];
-
-                                      return ChecklistTile(
-                                        item: item,
-                                        teamId: widget.team.id,
-                                        assignmentId: widget.assignment.id,
-                                        memberEmail: member.id,
-                                        colorHex: widget.team.color,
-                                      );
-                                    },
-                                  );
+                                  _cachedChecklistItems[cacheKey] = checklist;
                                 } else if (checklistSnapshot.hasError) {
                                   return Text(
                                       'Error: ${checklistSnapshot.error}');
                                 }
-                                return const CircularProgressIndicator();
+
+                                List<ChecklistItem> cachedChecklist =
+                                    _cachedChecklistItems[cacheKey] ?? [];
+                                return ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: cachedChecklist.length,
+                                  itemBuilder: (context, checklistIndex) {
+                                    ChecklistItem item =
+                                        cachedChecklist[checklistIndex];
+
+                                    return ChecklistTile(
+                                      item: item,
+                                      teamId: widget.team.id,
+                                      assignmentId: widget.assignment.id,
+                                      memberEmail: member.id,
+                                      colorHex: widget.team.color,
+                                    );
+                                  },
+                                );
                               },
                             ),
                           ],
