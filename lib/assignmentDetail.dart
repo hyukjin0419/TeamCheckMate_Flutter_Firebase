@@ -9,7 +9,7 @@ import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/checklistItem.dart';
 import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
-import 'package:team_check_mate/widget/%08checklistTile.dart';
+import 'package:team_check_mate/widget/checklistTile.dart';
 import 'package:team_check_mate/widget/assignmentCard.dart';
 import 'package:team_check_mate/widget/checklistInput.dart';
 import 'package:team_check_mate/widget/nameCard.dart';

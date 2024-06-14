@@ -347,7 +347,7 @@ class ApplicationState extends ChangeNotifier {
           .get();
       for (var assignmentDoc in assignmentsSnapshot.docs) {
         // 해당 사용자의 체크리스트 항목 가져오기
-        var checklistStream = _db
+        var checklistSnapshot = _db
             .collection('teams')
             .doc(teamDoc.id)
             .collection('assignments')
@@ -357,8 +357,7 @@ class ApplicationState extends ChangeNotifier {
             .collection('checklist')
             .snapshots();
 
-        await for (var snapshot in checklistStream) {
-          allItems.clear();
+        await for (var snapshot in checklistSnapshot) {
           for (var doc in snapshot.docs) {
             allItems.add(ChecklistItem.fromFirestore(doc));
           }

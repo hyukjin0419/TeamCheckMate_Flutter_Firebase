@@ -21,7 +21,7 @@ class ChecklistItem {
       isChecked: data['isChecked'] ?? false,
       content: data['content'] ?? '',
       timestamp: data['timestamp'],
-      updateTimestamp: data['updateTimestamp'] ?? '',
+      updateTimestamp: data['updateTimestamp'],
     );
   }
 }
