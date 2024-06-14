@@ -331,4 +331,40 @@ class ApplicationState extends ChangeNotifier {
       debugPrint("[add.part] Error with addChecklistItem function");
     }
   }
+
+  // --------------------------Individual Page----------
+  Stream<List<ChecklistItem>> getUserChecklistItems(String userEmail) async* {
+    List<ChecklistItem> allItems = [];
+
+    // 모든 팀 가져오기
+    var teamsSnapshot = await _db.collection('teams').get();
+    for (var teamDoc in teamsSnapshot.docs) {
+      // 모든 과제 가져오기
+      var assignmentsSnapshot = await _db
+          .collection('teams')
+          .doc(teamDoc.id)
+          .collection('assignments')
+          .get();
+      for (var assignmentDoc in assignmentsSnapshot.docs) {
+        // 해당 사용자의 체크리스트 항목 가져오기
+        var checklistStream = _db
+            .collection('teams')
+            .doc(teamDoc.id)
+            .collection('assignments')
+            .doc(assignmentDoc.id)
+            .collection('members')
+            .doc(userEmail)
+            .collection('checklist')
+            .snapshots();
+
+        await for (var snapshot in checklistStream) {
+          allItems.clear();
+          for (var doc in snapshot.docs) {
+            allItems.add(ChecklistItem.fromFirestore(doc));
+          }
+          yield allItems;
+        }
+      }
+    }
+  }
 }

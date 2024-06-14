@@ -20,7 +20,7 @@ class ChecklistItem {
       id: doc.id,
       isChecked: data['isChecked'] ?? false,
       content: data['content'] ?? '',
-      timestamp: data['timestamp'] ?? '',
+      timestamp: data['timestamp'],
       updateTimestamp: data['updateTimestamp'] ?? '',
     );
   }
