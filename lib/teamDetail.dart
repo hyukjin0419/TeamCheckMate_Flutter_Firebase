@@ -46,7 +46,12 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               context.pop();
             },
           ),
-          title: Text(widget.team.title),
+          title: Text(
+            "팀 정보",
+            style: GoogleFonts.poppins(
+              fontSize: 22,
+            ),
+          ),
           actions: <Widget>[
             PopupMenuButton<String>(
                 initialValue: "no choise",

@@ -71,7 +71,7 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
             },
           ),
           title: Text(
-            widget.assignment.title,
+            "과제 정보",
             style: GoogleFonts.poppins(
               fontSize: 22,
             ),

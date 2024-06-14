@@ -150,7 +150,7 @@ final _router = GoRouter(
       path: '/personal',
       pageBuilder: (context, state) => const NoTransitionPage(
           child: Scaffold(
-        body: PersonalPage(),
+        body: IndividualPage(),
         bottomNavigationBar: CustomBottomNavigationBar(index: 0),
       )),
     )
