@@ -18,13 +18,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     });
     switch (index) {
       case 0:
-        context.go('/');
+        context.go('/home');
         break;
       case 1:
-        context.go('/assignments');
-        break;
-      case 2:
-        context.go('/teams');
+        context.go('/home');
         break;
     }
   }
@@ -34,12 +31,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.assignment),
-          label: 'Assignments',
+          icon: Icon(Icons.person),
+          label: 'Personal',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.group),
@@ -47,7 +40,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         ),
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
+      selectedItemColor: Colors.tealAccent[800],
       onTap: _onItemTapped,
     );
   }
