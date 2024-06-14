@@ -5,6 +5,7 @@ import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/checklistItem.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/widget/checklistTile.dart';
+import 'package:team_check_mate/widget/nameCard.dart';
 import 'package:team_check_mate/widget/teamCard.dart';
 
 class IndividualPage extends StatelessWidget {
@@ -14,6 +15,16 @@ class IndividualPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
     var userEmail = appState.currentUser?.email;
+
+    List<ChecklistItem> sortChecklistItems(List<ChecklistItem> items) {
+      items.sort((a, b) {
+        if (a.isChecked != b.isChecked) {
+          return a.isChecked ? 1 : -1;
+        }
+        return a.timestamp.compareTo(b.timestamp);
+      });
+      return items;
+    }
 
     return Scaffold(
       appBar: AppBar(),
@@ -55,8 +66,15 @@ class IndividualPage extends StatelessWidget {
                               children: [
                                 Align(
                                     alignment: Alignment.centerLeft,
-                                    child: IntrinsicWidth(
-                                        child: TeamCard(team: team))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: IntrinsicWidth(
+                                          child: NameCardWithBtn(
+                                        text: team.title,
+                                        colorHex: team.color,
+                                        isHead: true,
+                                      )),
+                                    )),
                                 StreamBuilder<List<ChecklistItem>>(
                                   stream: appState.getIndividualChecklistStream(
                                       team.id, userEmail),

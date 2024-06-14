@@ -25,8 +25,7 @@ class AssignmentDetailPage extends StatefulWidget {
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   String? _activeMemberId; // 활성화된 멤버 ID를 저장
-  final Map<String, List<ChecklistItem>> _cachedChecklistItems =
-      {}; // 캐시된 체크리스트 아이템
+  final Map<String, List<ChecklistItem>> _cachedChecklistItems = {};
 
   void _toggleTextFormField(String memberId) {
     setState(() {
