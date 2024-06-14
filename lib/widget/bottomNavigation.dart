@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
-  const CustomBottomNavigationBar({super.key});
+  final int index;
+
+  const CustomBottomNavigationBar({super.key, required this.index});
 
   @override
   _CustomBottomNavigationBarState createState() =>
@@ -10,19 +12,27 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.index; // 초기 인덱스 설정
+  }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        context.go('/home');
-        break;
-      case 1:
-        context.go('/home');
-        break;
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+      switch (index) {
+        case 0:
+          context.go('/personal');
+          break;
+        case 1:
+          context.go('/home');
+          break;
+      }
     }
   }
 
@@ -40,7 +50,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         ),
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Colors.tealAccent[800],
       onTap: _onItemTapped,
     );
   }

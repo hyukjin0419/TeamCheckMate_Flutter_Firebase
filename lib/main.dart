@@ -11,11 +11,13 @@ import 'package:team_check_mate/home.dart';
 import 'package:team_check_mate/login.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/personal.dart';
 import 'package:team_check_mate/teamAdd.dart';
 import 'package:team_check_mate/teamDetail.dart';
 import 'package:team_check_mate/teamEdit.dart';
 import 'package:team_check_mate/teamJoin.dart';
 import 'package:team_check_mate/teamQr.dart';
+import 'package:team_check_mate/widget/bottomNavigation.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -36,7 +38,11 @@ final _router = GoRouter(
     ),
     GoRoute(
         path: '/home',
-        builder: (context, state) => const HomePage(),
+        pageBuilder: (context, state) => const NoTransitionPage(
+                child: Scaffold(
+              body: HomePage(),
+              bottomNavigationBar: CustomBottomNavigationBar(index: 1),
+            )),
         routes: [
           GoRoute(
             path: 'teamAdd',
@@ -140,7 +146,16 @@ final _router = GoRouter(
                 ),
               ]),
         ]),
+    GoRoute(
+      path: '/personal',
+      pageBuilder: (context, state) => const NoTransitionPage(
+          child: Scaffold(
+        body: PersonalPage(),
+        bottomNavigationBar: CustomBottomNavigationBar(index: 0),
+      )),
+    )
   ],
+  refreshListenable: ValueNotifier<int>(0),
 );
 
 class App extends StatelessWidget {
