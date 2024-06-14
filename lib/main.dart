@@ -11,7 +11,7 @@ import 'package:team_check_mate/home.dart';
 import 'package:team_check_mate/login.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
-import 'package:team_check_mate/personal.dart';
+import 'package:team_check_mate/individual.dart';
 import 'package:team_check_mate/teamAdd.dart';
 import 'package:team_check_mate/teamDetail.dart';
 import 'package:team_check_mate/teamEdit.dart';
