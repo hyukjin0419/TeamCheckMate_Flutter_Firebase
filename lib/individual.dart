@@ -50,7 +50,7 @@ class IndividualPage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await notificationService.showNotification();
+                    await notificationService.showTestNotification();
                   },
                   child: const Text('Show Notification'),
                 ),

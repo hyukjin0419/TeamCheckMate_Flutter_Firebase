@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/services/notification_service.dart';
 import 'package:team_check_mate/widget/modalBasic.dart';
 
 String getTimeRemaining(DateTime? dueDate) {
@@ -36,10 +38,14 @@ class _AssignmentCardState extends State<AssignmentCard> {
   late Timer _timer;
   late String _timeRemaining;
   DateTime? _dueDate;
+  late NotificationService _notificationService;
+  bool _notificationSent = false;
 
   @override
   void initState() {
     super.initState();
+    _notificationService =
+        Provider.of<NotificationService>(context, listen: false);
     _dueDate = widget.assignment.dueDate.isNotEmpty
         ? DateTime.tryParse(widget.assignment.dueDate)
         : null;
@@ -48,6 +54,19 @@ class _AssignmentCardState extends State<AssignmentCard> {
       setState(() {
         _timeRemaining = getTimeRemaining(_dueDate);
       });
+
+      // 1분 남았을 때 알림 보내기
+      if (_dueDate != null && !_notificationSent) {
+        Duration difference = _dueDate!.difference(DateTime.now());
+        if (difference.inMinutes == 1 && difference.inMinutes > 0) {
+          debugPrint("is workuing");
+          _notificationService.sendNotification(
+            'Assignment Due Reminder',
+            'Your assignment "${widget.assignment.title}" is due in 1 minute!',
+          );
+          _notificationSent = true;
+        }
+      }
     });
   }
 
