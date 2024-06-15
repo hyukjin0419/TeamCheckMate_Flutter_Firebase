@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/checklistItem.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/services/notification_service.dart';
 import 'package:team_check_mate/widget/checklistTile.dart';
 import 'package:team_check_mate/widget/nameCard.dart';
 import 'package:team_check_mate/widget/teamCard.dart';
@@ -15,6 +16,8 @@ class IndividualPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context, listen: true);
     var userEmail = appState.currentUser?.email;
+    var notificationService =
+        Provider.of<NotificationService>(context, listen: false);
 
     List<ChecklistItem> sortChecklistItems(List<ChecklistItem> items) {
       items.sort((a, b) {
@@ -44,6 +47,12 @@ class IndividualPage extends StatelessWidget {
                     "$userEmail \n환영합니다.",
                     style: GoogleFonts.poppins(fontSize: 20),
                   ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await notificationService.showNotification();
+                  },
+                  child: const Text('Show Notification'),
                 ),
                 const Divider(),
                 Expanded(

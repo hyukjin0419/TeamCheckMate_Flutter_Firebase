@@ -28,10 +28,15 @@ void main() async {
   final notificationService = NotificationService();
   await notificationService.init();
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => ApplicationState(),
-    builder: ((context, child) => const App()),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ApplicationState()),
+        Provider<NotificationService>(create: (context) => notificationService),
+      ],
+      child: const App(),
+    ),
+  );
 }
 
 final _router = GoRouter(
