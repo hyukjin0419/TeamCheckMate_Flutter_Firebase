@@ -78,4 +78,30 @@ class NotificationService {
   ) async {
     debugPrint('Received local notification: $title $body');
   }
+
+  Future<void> scheduleAssignmentDueNotification(
+      DateTime dueDate, String assignmentTitle) async {
+    tz.TZDateTime scheduledNotificationDateTime = tz.TZDateTime.from(
+        dueDate.subtract(const Duration(days: 1)), // 마감 하루 전
+        tz.local);
+
+    const NotificationDetails notificationDetails = NotificationDetails(
+      iOS: DarwinNotificationDetails(),
+      android: AndroidNotificationDetails(
+          'your_channel_id', 'your_channel_name',
+          importance: Importance.high, priority: Priority.high),
+    );
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'Assignment Due',
+      'Your assignment "$assignmentTitle" is due tomorrow!',
+      scheduledNotificationDateTime,
+      notificationDetails,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
 }
