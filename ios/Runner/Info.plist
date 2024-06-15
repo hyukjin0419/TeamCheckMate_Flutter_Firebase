@@ -27,6 +27,15 @@
 	<!-- 카메라 사용 권한 설명 -->
 	<key>NSCameraUsageDescription</key>
 	<string>QR 코드를 스캔하기 위해 카메라 접근 권한이 필요합니다.</string>
+
+	<!--알림 보내기 설정-->
+	<key>UIBackgroundModes</key>
+	<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+	</array>
+	<key>UIUserNotificationUsageDescription</key>
+	<string>We use notifications to remind you about due tasks.</string>
 	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

@@ -12,6 +12,7 @@ import 'package:team_check_mate/login.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/individual.dart';
+import 'package:team_check_mate/services/notification_service.dart';
 import 'package:team_check_mate/teamAdd.dart';
 import 'package:team_check_mate/teamDetail.dart';
 import 'package:team_check_mate/teamEdit.dart';
@@ -23,6 +24,9 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final notificationService = NotificationService();
+  await notificationService.init();
 
   runApp(ChangeNotifierProvider(
     create: (context) => ApplicationState(),
