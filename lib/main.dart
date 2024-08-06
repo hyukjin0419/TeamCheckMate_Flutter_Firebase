@@ -3,10 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:team_check_mate/assignmentAdd.dart';
-import 'package:team_check_mate/app.dart';
 import "package:provider/provider.dart";
 import 'package:team_check_mate/assignmentDetail.dart';
 import 'package:team_check_mate/assignmentEdit.dart';
+import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/home.dart';
 import 'package:team_check_mate/login.dart';
 import 'package:team_check_mate/model/assignment.dart';
@@ -39,133 +39,133 @@ void main() async {
   );
 }
 
-final _router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const LoginPage(),
-    ),
-    GoRoute(
-        path: '/home',
-        pageBuilder: (context, state) => const NoTransitionPage(
-                child: Scaffold(
-              body: HomePage(),
-              bottomNavigationBar: CustomBottomNavigationBar(index: 1),
-            )),
-        routes: [
-          GoRoute(
-            path: 'teamAdd',
-            builder: ((context, state) => const TeamAddPage()),
-          ),
-          GoRoute(
-            path: 'teamJoin',
-            builder: ((context, state) => const TeamJoinPage()),
-          ),
-          GoRoute(
-              path: 'teamDetail',
-              builder: ((context, state) {
-                final team = state.extra as Team?;
-                if (team != null) {
-                  return TeamDetailPage(team: team);
-                } else {
-                  debugPrint("No team data provided");
-                  return ErrorWidget(ErrorWidget);
-                }
-              }),
-              routes: [
-                GoRoute(
-                  path: 'teamEdit',
-                  builder: ((context, state) {
-                    final team = state.extra as Team?;
-                    if (team != null) {
-                      return TeamEditPage(team: team);
-                    } else {
-                      debugPrint("No team data provided");
-                      return ErrorWidget(ErrorWidget);
-                    }
-                  }),
-                ),
-                GoRoute(
-                  path: 'teamQR',
-                  builder: ((context, state) {
-                    final team = state.extra as Team?;
-                    if (team != null) {
-                      return TeamQRPage(team: team);
-                    } else {
-                      debugPrint("No team data provided");
-                      return ErrorWidget(ErrorWidget);
-                    }
-                  }),
-                ),
-                GoRoute(
-                  path: 'assignmentAdd',
-                  builder: ((context, state) {
-                    final team = state.extra as Team?;
-                    if (team != null) {
-                      return AssignmentAddPage(team: team);
-                    } else {
-                      debugPrint("No team data provided");
-                      return ErrorWidget(ErrorWidget);
-                    }
-                  }),
-                ),
-                GoRoute(
-                  path: 'assignmentEdit',
-                  builder: ((context, state) {
-                    final data = state.extra as Map<String, dynamic>?;
-                    if (data != null) {
-                      final team = data['team'] as Team?;
-                      final assignment = data['assignment'] as Assignment?;
+final _router = GoRouter(routes: [
+  GoRoute(
+    path: '/',
+    builder: (context, state) => const HomePage(),
+  ),
+]);
+// GoRoute(
+//     path: '/home',
+//     pageBuilder: (context, state) => const NoTransitionPage(
+//             child: Scaffold(
+//           body: HomePage(),
+//           bottomNavigationBar: CustomBottomNavigationBar(index: 1),
+//         )),
+//     routes: [
+//       GoRoute(
+//         path: 'teamAdd',
+//         builder: ((context, state) => const TeamAddPage()),
+//       ),
+//       GoRoute(
+//         path: 'teamJoin',
+//         builder: ((context, state) => const TeamJoinPage()),
+//       ),
+//       GoRoute(
+//           path: 'teamDetail',
+//           builder: ((context, state) {
+//             final team = state.extra as Team?;
+//             if (team != null) {
+//               return TeamDetailPage(team: team);
+//             } else {
+//               debugPrint("No team data provided");
+//               return ErrorWidget(ErrorWidget);
+//             }
+//           }),
+//           routes: [
+//             GoRoute(
+//               path: 'teamEdit',
+//               builder: ((context, state) {
+//                 final team = state.extra as Team?;
+//                 if (team != null) {
+//                   return TeamEditPage(team: team);
+//                 } else {
+//                   debugPrint("No team data provided");
+//                   return ErrorWidget(ErrorWidget);
+//                 }
+//               }),
+//             ),
+//             GoRoute(
+//               path: 'teamQR',
+//               builder: ((context, state) {
+//                 final team = state.extra as Team?;
+//                 if (team != null) {
+//                   return TeamQRPage(team: team);
+//                 } else {
+//                   debugPrint("No team data provided");
+//                   return ErrorWidget(ErrorWidget);
+//                 }
+//               }),
+//             ),
+//             GoRoute(
+//               path: 'assignmentAdd',
+//               builder: ((context, state) {
+//                 final team = state.extra as Team?;
+//                 if (team != null) {
+//                   return AssignmentAddPage(team: team);
+//                 } else {
+//                   debugPrint("No team data provided");
+//                   return ErrorWidget(ErrorWidget);
+//                 }
+//               }),
+//             ),
+//             GoRoute(
+//               path: 'assignmentEdit',
+//               builder: ((context, state) {
+//                 final data = state.extra as Map<String, dynamic>?;
+//                 if (data != null) {
+//                   final team = data['team'] as Team?;
+//                   final assignment = data['assignment'] as Assignment?;
 
-                      if (team != null && assignment != null) {
-                        return AssignmentEditPage(
-                            team: team, assignment: assignment);
-                      } else {
-                        debugPrint("No team or assignment data provided");
-                        return ErrorWidget(
-                            'No team or assignment data provided');
-                      }
-                    } else {
-                      debugPrint("No data provided");
-                      return ErrorWidget('No data provided');
-                    }
-                  }),
-                ),
-                GoRoute(
-                  path: 'assignmentDetail',
-                  builder: (context, state) {
-                    final data = state.extra as Map<String, dynamic>?;
-                    if (data != null) {
-                      final team = data['team'] as Team?;
-                      final assignment = data['assignment'] as Assignment?;
+//                   if (team != null && assignment != null) {
+//                     return AssignmentEditPage(
+//                         team: team, assignment: assignment);
+//                   } else {
+//                     debugPrint("No team or assignment data provided");
+//                     return ErrorWidget(
+//                         'No team or assignment data provided');
+//                   }
+//                 } else {
+//                   debugPrint("No data provided");
+//                   return ErrorWidget('No data provided');
+//                 }
+//               }),
+//             ),
+//             GoRoute(
+//               path: 'assignmentDetail',
+//               builder: (context, state) {
+//                 final data = state.extra as Map<String, dynamic>?;
+//                 if (data != null) {
+//                   final team = data['team'] as Team?;
+//                   final assignment = data['assignment'] as Assignment?;
 
-                      if (team != null && assignment != null) {
-                        return AssignmentDetailPage(
-                            team: team, assignment: assignment);
-                      } else {
-                        debugPrint("No team or assignment data provided");
-                        return ErrorWidget(
-                            'No team or assignment data provided');
-                      }
-                    } else {
-                      debugPrint("No data provided");
-                      return ErrorWidget('No data provided');
-                    }
-                  },
-                ),
-              ]),
-        ]),
-    GoRoute(
-      path: '/personal',
-      pageBuilder: (context, state) => const NoTransitionPage(
-          child: Scaffold(
-        body: IndividualPage(),
-        bottomNavigationBar: CustomBottomNavigationBar(index: 0),
-      )),
-    )
-  ],
-  refreshListenable: ValueNotifier<int>(0),
-);
+//                   if (team != null && assignment != null) {
+//                     return AssignmentDetailPage(
+//                         team: team, assignment: assignment);
+//                   } else {
+//                     debugPrint("No team or assignment data provided");
+//                     return ErrorWidget(
+//                         'No team or assignment data provided');
+//                   }
+//                 } else {
+//                   debugPrint("No data provided");
+//                   return ErrorWidget('No data provided');
+//                 }
+//               },
+//             ),
+// ]),
+// ]),
+//   GoRoute(
+//     path: '/personal',
+//     pageBuilder: (context, state) => const NoTransitionPage(
+//         child: Scaffold(
+//       body: IndividualPage(),
+//       bottomNavigationBar: CustomBottomNavigationBar(index: 0),
+//     )),
+//   )
+// ],
+// refreshListenable: ValueNotifier<int>(0),
+// );
 
 class App extends StatelessWidget {
   const App({super.key});

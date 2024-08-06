@@ -154,6 +154,9 @@ class ApplicationState extends ChangeNotifier {
             memberIds.add(currentUser!.email);
 
             transaction.update(teamDoc, {'memberIds': memberIds});
+
+            // 여기서 하위 컬렉션 members에 멤버 정보 추가
+            await addTeamMember(teamId, currentUser!);
           }
         }
       });

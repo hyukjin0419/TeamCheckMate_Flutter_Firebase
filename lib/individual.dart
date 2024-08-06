@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:team_check_mate/app.dart';
+import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/model/checklistItem.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/services/notification_service.dart';

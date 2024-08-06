@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:team_check_mate/app.dart';
+import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/model/member.dart';
 
 class NameCards extends StatelessWidget {
