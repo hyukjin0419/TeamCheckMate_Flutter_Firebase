@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:team_check_mate/controller/app.dart';
+import 'package:team_check_mate/controller/app1.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
@@ -30,7 +30,10 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
     String color = widget.team.color;
 
     // ignore: unused_local_variable
-    var appState = Provider.of<ApplicationState>(context, listen: true);
+    var teamState =
+        Provider.of<ApplicationState>(context, listen: true).teamController;
+    var assignmentState = Provider.of<ApplicationState>(context, listen: true)
+        .assignmentController;
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -58,7 +61,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                 icon: const Icon(Icons.more_vert),
                 onSelected: (String value) {
                   if (value == 'delete') {
-                    appState.deleteTeam(widget.team.id);
+                    teamState.deleteTeam(widget.team.id);
                     context.pop();
                   } else if (value == 'edit') {
                     context.push("/home/teamDetail/teamEdit",
@@ -130,12 +133,12 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               ],
             ),
           ),
-          Flexible(
-              child: NameCards(
-                  teamId: widget.team.id, teamColor: widget.team.color)),
+          // Flexible(
+          //     child: NameCards(
+          //         teamId: widget.team.id, teamColor: widget.team.color)),
           Flexible(
             child: StreamBuilder<List<Assignment>>(
-              stream: appState.getAssignmentsStream(widget.team.id),
+              stream: assignmentState.getAssignmentsStream(widget.team.id),
               builder: ((context, snapshot) {
                 if (snapshot.hasData) {
                   var assignments = snapshot.data!;
@@ -143,8 +146,9 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                     itemCount: assignments.length,
                     itemBuilder: (BuildContext context, int index) {
                       var assignment = assignments[index];
-                      return AssignmentCard(
-                          team: widget.team, assignment: assignment);
+                      return null;
+                      // return AssignmentCard(
+                      //     team: widget.team, assignment: assignment);
                     },
                   );
                 } else {

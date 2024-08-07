@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:team_check_mate/assignmentAdd.dart';
+import 'package:team_check_mate/old_view/assignmentAdd.dart';
 import "package:provider/provider.dart";
-import 'package:team_check_mate/assignmentDetail.dart';
-import 'package:team_check_mate/assignmentEdit.dart';
-import 'package:team_check_mate/controller/app.dart';
-import 'package:team_check_mate/home.dart';
-import 'package:team_check_mate/login.dart';
+import 'package:team_check_mate/old_view/assignmentDetail.dart';
+import 'package:team_check_mate/old_view/assignmentEdit.dart';
+import 'package:team_check_mate/controller/app1.dart';
+import 'package:team_check_mate/view/team.dart';
+import 'package:team_check_mate/view/login.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
-import 'package:team_check_mate/individual.dart';
+import 'package:team_check_mate/old_view/individual.dart';
 import 'package:team_check_mate/services/notification_service.dart';
-import 'package:team_check_mate/teamAdd.dart';
-import 'package:team_check_mate/teamDetail.dart';
-import 'package:team_check_mate/teamEdit.dart';
-import 'package:team_check_mate/teamJoin.dart';
-import 'package:team_check_mate/teamQr.dart';
+import 'package:team_check_mate/view/teamAdd.dart';
+import 'package:team_check_mate/view/teamDetail.dart';
+import 'package:team_check_mate/view/teamEdit.dart';
+import 'package:team_check_mate/view/teamJoin.dart';
+import 'package:team_check_mate/view/teamQr.dart';
 import 'package:team_check_mate/widget/bottomNavigation.dart';
 import 'firebase_options.dart';
 
@@ -42,16 +42,17 @@ void main() async {
 final _router = GoRouter(routes: [
   GoRoute(
     path: '/',
-    builder: (context, state) => const HomePage(),
+    builder: (context, state) => const LoginPage(),
   ),
+  GoRoute(
+      path: '/home',
+      pageBuilder: (context, state) => const NoTransitionPage(
+            child: Scaffold(
+              body: HomePage(),
+              bottomNavigationBar: CustomBottomNavigationBar(index: 1),
+            ),
+          ))
 ]);
-// GoRoute(
-//     path: '/home',
-//     pageBuilder: (context, state) => const NoTransitionPage(
-//             child: Scaffold(
-//           body: HomePage(),
-//           bottomNavigationBar: CustomBottomNavigationBar(index: 1),
-//         )),
 //     routes: [
 //       GoRoute(
 //         path: 'teamAdd',

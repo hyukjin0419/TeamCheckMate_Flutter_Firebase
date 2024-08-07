@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:team_check_mate/controller/app.dart';
+import 'package:team_check_mate/controller/app1.dart';
 
 class TeamAddPage extends StatefulWidget {
   const TeamAddPage({super.key});
@@ -18,7 +18,10 @@ class _TeamAddPageState extends State<TeamAddPage> {
 
   @override
   Widget build(BuildContext context) {
-    var appState = Provider.of<ApplicationState>(context, listen: true);
+    var teamState =
+        Provider.of<ApplicationState>(context, listen: true).teamController;
+    var userState =
+        Provider.of<ApplicationState>(context, listen: true).authController;
 
     Widget buildColorOption(
         BuildContext context, Color color, String colorName) {
@@ -163,7 +166,8 @@ class _TeamAddPageState extends State<TeamAddPage> {
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                appState.addTeam(_titlecontroller.text, selectedColor);
+                teamState.addTeam(_titlecontroller.text, selectedColor,
+                    userState.currentUser);
                 context.go('/home');
               }
             },
