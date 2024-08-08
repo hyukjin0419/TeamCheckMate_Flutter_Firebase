@@ -145,9 +145,8 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                     itemCount: assignments.length,
                     itemBuilder: (BuildContext context, int index) {
                       var assignment = assignments[index];
-                      return null;
-                      // return AssignmentCard(
-                      //     team: widget.team, assignment: assignment);
+                      // return null;
+                      return AssignmentCard(team: team, assignment: assignment);
                     },
                   );
                 } else {
