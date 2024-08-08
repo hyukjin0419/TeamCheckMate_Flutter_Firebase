@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:team_check_mate/controller/team_controller.dart';
 import 'package:team_check_mate/old_view/assignmentAdd.dart';
 import "package:provider/provider.dart";
 import 'package:team_check_mate/old_view/assignmentDetail.dart';
 import 'package:team_check_mate/old_view/assignmentEdit.dart';
-import 'package:team_check_mate/controller/app1.dart';
+import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/view/team.dart';
 import 'package:team_check_mate/view/login.dart';
 import 'package:team_check_mate/model/assignment.dart';
@@ -45,13 +46,31 @@ final _router = GoRouter(routes: [
     builder: (context, state) => const LoginPage(),
   ),
   GoRoute(
-      path: '/home',
-      pageBuilder: (context, state) => const NoTransitionPage(
-            child: Scaffold(
-              body: HomePage(),
-              bottomNavigationBar: CustomBottomNavigationBar(index: 1),
-            ),
-          ))
+    path: '/home',
+    pageBuilder: (context, state) => const NoTransitionPage(
+      child: Scaffold(
+        body: HomePage(),
+        bottomNavigationBar: CustomBottomNavigationBar(index: 1),
+      ),
+    ),
+    routes: [
+      GoRoute(
+        path: 'teamDetail',
+        builder: ((context, state) {
+          var teamController =
+              Provider.of<ApplicationState>(context, listen: false)
+                  .teamController;
+          final team = teamController.selectedTeam;
+          if (team != null) {
+            return const TeamDetailPage();
+          } else {
+            debugPrint("No team data provided");
+            return ErrorWidget(ErrorWidget);
+          }
+        }),
+      )
+    ],
+  ),
 ]);
 //     routes: [
 //       GoRoute(

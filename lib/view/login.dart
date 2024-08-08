@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:team_check_mate/controller/app1.dart';
+import 'package:team_check_mate/controller/app.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

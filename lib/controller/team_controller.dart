@@ -10,6 +10,7 @@ class TeamController with ChangeNotifier {
 
   Team? _selectedTeam;
   Team? get selectedTeam => _selectedTeam;
+
   void selectTeam(Team team) {
     _selectedTeam = team;
     notifyListeners();

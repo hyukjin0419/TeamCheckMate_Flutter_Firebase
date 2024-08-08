@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:team_check_mate/controller/app1.dart';
+import 'package:team_check_mate/controller/app.dart';
+import 'package:team_check_mate/controller/team_controller.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/model/team.dart';
@@ -13,8 +14,7 @@ import 'package:team_check_mate/widget/modalBasic.dart';
 import 'package:team_check_mate/widget/nameCard.dart';
 
 class TeamDetailPage extends StatefulWidget {
-  final Team team;
-  const TeamDetailPage({super.key, required this.team});
+  const TeamDetailPage({super.key});
 
   @override
   State<TeamDetailPage> createState() => _TeamDetailPageState();
@@ -23,17 +23,20 @@ class TeamDetailPage extends StatefulWidget {
 class _TeamDetailPageState extends State<TeamDetailPage> {
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double folderWidth = screenWidth;
-    double folderHeight = folderWidth / 2.5;
-
-    String color = widget.team.color;
-
-    // ignore: unused_local_variable
     var teamState =
         Provider.of<ApplicationState>(context, listen: true).teamController;
     var assignmentState = Provider.of<ApplicationState>(context, listen: true)
         .assignmentController;
+    var team = teamState.selectedTeam;
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double folderWidth = screenWidth;
+    double folderHeight = folderWidth / 2.5;
+
+    String color = team!.color;
+
+    // ignore: unused_local_variable
+
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -61,16 +64,14 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                 icon: const Icon(Icons.more_vert),
                 onSelected: (String value) {
                   if (value == 'delete') {
-                    teamState.deleteTeam(widget.team.id);
+                    teamState.deleteTeam(team.id);
                     context.pop();
                   } else if (value == 'edit') {
-                    context.push("/home/teamDetail/teamEdit",
-                        extra: widget.team);
+                    context.push("/home/teamDetail/teamEdit", extra: team);
                   } else if (value == 'invite') {
-                    context.push("/home/teamDetail/teamQR", extra: widget.team);
+                    context.push("/home/teamDetail/teamQR", extra: team);
                   } else if (value == 'create') {
-                    context.push("/home/teamDetail/assignmentAdd",
-                        extra: widget.team);
+                    context.push("/home/teamDetail/assignmentAdd", extra: team);
                   }
                   debugPrint(value);
                 },
@@ -125,7 +126,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                 Positioned(
                   top: folderHeight * (6 / 10),
                   child: Text(
-                    widget.team.title,
+                    team.title,
                     overflow: TextOverflow.fade,
                     softWrap: false,
                   ),
@@ -133,12 +134,10 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               ],
             ),
           ),
-          // Flexible(
-          //     child: NameCards(
-          //         teamId: widget.team.id, teamColor: widget.team.color)),
+          Flexible(child: NameCards(teamId: team.id, teamColor: team.color)),
           Flexible(
             child: StreamBuilder<List<Assignment>>(
-              stream: assignmentState.getAssignmentsStream(widget.team.id),
+              stream: assignmentState.getAssignmentsStream(team.id),
               builder: ((context, snapshot) {
                 if (snapshot.hasData) {
                   var assignments = snapshot.data!;
