@@ -62,6 +62,9 @@ class _HomePageState extends State<HomePage> {
         child: StreamBuilder<List<Team>>(
           stream: teamAppState.getTeamsStream(userAppState.currentUser),
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            }
             if (snapshot.hasData) {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
