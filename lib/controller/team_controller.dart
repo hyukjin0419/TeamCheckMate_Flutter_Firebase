@@ -90,10 +90,11 @@ class TeamController with ChangeNotifier {
     }
   }
 
-  Future<void> updateTeam(Team team, String newTitle) async {
+  Future<void> updateTeam(
+      Team team, String newTitle, String selectedColor) async {
     final Map<String, dynamic> teamData = {
       'title': newTitle,
-      'color': team.color,
+      'color': selectedColor,
       'updateTimestamp': FieldValue.serverTimestamp(),
     };
     try {
