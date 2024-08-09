@@ -5,6 +5,14 @@ import 'package:team_check_mate/model/assignment.dart';
 class AssignmentController with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  Assignment? _selectedAssignment;
+  Assignment? get selectedAssignment => _selectedAssignment;
+
+  void selectAssignment(Assignment assignment) {
+    _selectedAssignment = assignment;
+    notifyListeners();
+  }
+
   Stream<List<Assignment>> getAssignmentsStream(String teamId) {
     return _db
         .collection('teams')

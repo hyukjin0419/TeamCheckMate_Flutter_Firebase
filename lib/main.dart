@@ -5,20 +5,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:team_check_mate/controller/team_controller.dart';
 import 'package:team_check_mate/old_view/assignmentAdd.dart';
 import "package:provider/provider.dart";
-import 'package:team_check_mate/old_view/assignmentDetail.dart';
+import 'package:team_check_mate/view/assignment/assignmentDetail.dart';
 import 'package:team_check_mate/old_view/assignmentEdit.dart';
 import 'package:team_check_mate/controller/app.dart';
-import 'package:team_check_mate/view/team.dart';
+import 'package:team_check_mate/view/team/team.dart';
 import 'package:team_check_mate/view/login.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/old_view/individual.dart';
 import 'package:team_check_mate/services/notification_service.dart';
-import 'package:team_check_mate/view/teamAdd.dart';
-import 'package:team_check_mate/view/teamDetail.dart';
-import 'package:team_check_mate/view/teamEdit.dart';
-import 'package:team_check_mate/view/teamJoin.dart';
-import 'package:team_check_mate/view/teamQr.dart';
+import 'package:team_check_mate/view/team/teamAdd.dart';
+import 'package:team_check_mate/view/team/teamDetail.dart';
+import 'package:team_check_mate/view/team/teamEdit.dart';
+import 'package:team_check_mate/view/team/teamJoin.dart';
+import 'package:team_check_mate/view/team/teamQr.dart';
 import 'package:team_check_mate/widget/bottomNavigation.dart';
 import 'firebase_options.dart';
 
@@ -58,7 +58,7 @@ final _router = GoRouter(routes: [
         path: 'teamDetail',
         builder: ((context, state) {
           var teamController =
-              Provider.of<ApplicationState>(context, listen: false)
+              Provider.of<ApplicationState>(context, listen: true)
                   .teamController;
           final team = teamController.selectedTeam;
           if (team != null) {
@@ -68,7 +68,26 @@ final _router = GoRouter(routes: [
             return ErrorWidget(ErrorWidget);
           }
         }),
-      )
+        routes: [
+          GoRoute(
+              path: 'assignmentDetail',
+              builder: (context, state) {
+                var teamController =
+                    Provider.of<ApplicationState>(context, listen: true)
+                        .teamController;
+                final team = teamController.selectedTeam;
+                var assignmentController =
+                    Provider.of<ApplicationState>(context, listen: true)
+                        .assignmentController;
+                final assignment = assignmentController.selectedAssignment;
+                if (team != null && assignment != null) {
+                  return const AssignmentDetailPage();
+                } else {
+                  return ErrorWidget("???");
+                }
+              }),
+        ],
+      ),
     ],
   ),
 ]);

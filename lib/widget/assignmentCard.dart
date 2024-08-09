@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/services/notification_service.dart';
@@ -78,6 +79,8 @@ class _AssignmentCardState extends State<AssignmentCard> {
 
   @override
   Widget build(BuildContext context) {
+    var assignmentState = Provider.of<ApplicationState>(context, listen: true)
+        .assignmentController;
     double screenWidth = MediaQuery.of(context).size.width;
     double folderWidth = screenWidth;
     String title = widget.assignment.title;
@@ -88,9 +91,9 @@ class _AssignmentCardState extends State<AssignmentCard> {
         children: [
           GestureDetector(
             onTap: () {
+              assignmentState.selectAssignment.call(widget.assignment);
               context.push(
                 "/home/teamDetail/assignmentDetail",
-                extra: {'team': widget.team, 'assignment': widget.assignment},
               );
             },
             child: SizedBox(
