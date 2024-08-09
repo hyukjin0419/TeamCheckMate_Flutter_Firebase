@@ -67,7 +67,8 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                     teamState.deleteTeam(team.id);
                     context.pop();
                   } else if (value == 'edit') {
-                    context.push("/home/teamDetail/teamEdit", extra: team);
+                    teamState.selectTeam.call(team);
+                    context.push("/home/teamDetail/teamEdit");
                   } else if (value == 'invite') {
                     context.push("/home/teamDetail/teamQR", extra: team);
                   } else if (value == 'create') {

@@ -78,6 +78,33 @@ final _router = GoRouter(routes: [
         }),
         routes: [
           GoRoute(
+            path: 'teamEdit',
+            builder: ((context, state) {
+              var teamController =
+                  Provider.of<ApplicationState>(context, listen: true)
+                      .teamController;
+              final team = teamController.selectedTeam;
+              if (team != null) {
+                return const TeamEditPage();
+              } else {
+                debugPrint("No team data provided");
+                return ErrorWidget(ErrorWidget);
+              }
+            }),
+          ),
+          GoRoute(
+            path: 'teamQR',
+            builder: ((context, state) {
+              final team = state.extra as Team?;
+              if (team != null) {
+                return TeamQRPage(team: team);
+              } else {
+                debugPrint("No team data provided");
+                return ErrorWidget(ErrorWidget);
+              }
+            }),
+          ),
+          GoRoute(
               path: 'assignmentDetail',
               builder: (context, state) {
                 var teamController =
