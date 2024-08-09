@@ -105,6 +105,18 @@ final _router = GoRouter(routes: [
             }),
           ),
           GoRoute(
+            path: 'assignmentAdd',
+            builder: ((context, state) {
+              final team = state.extra as Team?;
+              if (team != null) {
+                return AssignmentAddPage(team: team);
+              } else {
+                debugPrint("No team data provided");
+                return ErrorWidget(ErrorWidget);
+              }
+            }),
+          ),
+          GoRoute(
               path: 'assignmentDetail',
               builder: (context, state) {
                 var teamController =
