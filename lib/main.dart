@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:team_check_mate/controller/team_controller.dart';
-import 'package:team_check_mate/old_view/assignmentAdd.dart';
+import 'package:team_check_mate/view/assignment/assignmentAdd.dart';
 import "package:provider/provider.dart";
 import 'package:team_check_mate/view/assignment/assignmentDetail.dart';
 import 'package:team_check_mate/old_view/assignmentEdit.dart';
@@ -117,22 +117,44 @@ final _router = GoRouter(routes: [
             }),
           ),
           GoRoute(
-              path: 'assignmentDetail',
-              builder: (context, state) {
-                var teamController =
-                    Provider.of<ApplicationState>(context, listen: true)
-                        .teamController;
-                final team = teamController.selectedTeam;
-                var assignmentController =
-                    Provider.of<ApplicationState>(context, listen: true)
-                        .assignmentController;
-                final assignment = assignmentController.selectedAssignment;
-                if (team != null && assignment != null) {
-                  return const AssignmentDetailPage();
-                } else {
-                  return ErrorWidget("???");
-                }
-              }),
+            path: 'assignmentDetail',
+            builder: (context, state) {
+              var teamController =
+                  Provider.of<ApplicationState>(context, listen: true)
+                      .teamController;
+              final team = teamController.selectedTeam;
+              var assignmentController =
+                  Provider.of<ApplicationState>(context, listen: true)
+                      .assignmentController;
+              final assignment = assignmentController.selectedAssignment;
+              if (team != null && assignment != null) {
+                return const AssignmentDetailPage();
+              } else {
+                return ErrorWidget(ErrorWidget);
+              }
+            },
+          ),
+          GoRoute(
+            path: 'assignmentEdit',
+            builder: (context, state) {
+              final data = state.extra as Map<String, dynamic>?;
+
+              if (data == null) {
+                debugPrint("No data provided");
+                return ErrorWidget("No data provided");
+              }
+
+              final team = data['team'] as Team?;
+              final assignment = data['assignment'] as Assignment?;
+
+              if (team == null || assignment == null) {
+                debugPrint("No team or assignment data provided");
+                return ErrorWidget("No team or assignment data provided");
+              }
+
+              return AssignmentEditPage(team: team, assignment: assignment);
+            },
+          ),
         ],
       ),
     ],
