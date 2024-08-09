@@ -15,21 +15,19 @@ class TeamEditPage extends StatefulWidget {
 class _TeamEditPageState extends State<TeamEditPage> {
   final _titlecontroller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var teamState =
         Provider.of<ApplicationState>(context, listen: true).teamController;
     var team = teamState.selectedTeam;
     return Scaffold(
-      // backgroundColor: Colors.black,
       appBar: AppBar(
-        // backgroundColor: Colors.black,
         leadingWidth: 80,
         leading: IconButton(
           icon: const Icon(
             Icons.backspace_outlined,
             semanticLabel: 'back',
-            // color: Colors.white
           ),
           onPressed: () {
             context.pop();

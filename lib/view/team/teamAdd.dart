@@ -26,17 +26,18 @@ class _TeamAddPageState extends State<TeamAddPage> {
     Widget buildColorOption(
         BuildContext context, Color color, String colorName) {
       return GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedColor = colorName;
-              debugPrint(selectedColor);
-            });
-            Navigator.of(context).pop();
-          },
-          child: CircleAvatar(
-            backgroundColor: color,
-            radius: 10,
-          ));
+        onTap: () {
+          setState(() {
+            selectedColor = colorName;
+            debugPrint(selectedColor);
+          });
+          Navigator.of(context).pop();
+        },
+        child: CircleAvatar(
+          backgroundColor: color,
+          radius: 10,
+        ),
+      );
     }
 
     void pickColor(BuildContext context) {
