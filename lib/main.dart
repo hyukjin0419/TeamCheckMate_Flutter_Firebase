@@ -55,6 +55,14 @@ final _router = GoRouter(routes: [
     ),
     routes: [
       GoRoute(
+        path: 'teamAdd',
+        builder: ((context, state) => const TeamAddPage()),
+      ),
+      GoRoute(
+        path: 'teamJoin',
+        builder: ((context, state) => const TeamJoinPage()),
+      ),
+      GoRoute(
         path: 'teamDetail',
         builder: ((context, state) {
           var teamController =
