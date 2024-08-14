@@ -6,7 +6,7 @@ import 'package:team_check_mate/controller/team_controller.dart';
 import 'package:team_check_mate/view/assignment/assignmentAdd.dart';
 import "package:provider/provider.dart";
 import 'package:team_check_mate/view/assignment/assignmentDetail.dart';
-import 'package:team_check_mate/old_view/assignmentEdit.dart';
+import 'package:team_check_mate/view/assignment/assignmentEdit.dart';
 import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/view/team/team.dart';
 import 'package:team_check_mate/view/login.dart';

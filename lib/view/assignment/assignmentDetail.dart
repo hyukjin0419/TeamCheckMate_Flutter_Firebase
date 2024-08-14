@@ -23,6 +23,7 @@ class AssignmentDetailPage extends StatefulWidget {
 
 class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
   String? _activeMemberId; // 활성화된 멤버 ID를 저장
+
   final Map<String, List<ChecklistItem>> _cachedChecklistItems = {};
 
   void _toggleTextFormField(String memberId) {
@@ -60,6 +61,8 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
         .assignmentController;
     var memberState =
         Provider.of<ApplicationState>(context, listen: true).memberController;
+    var checklistState = Provider.of<ApplicationState>(context, listen: true)
+        .checklistController;
 
     var team = teamState.selectedTeam;
     var assignment = assignmentState.selectedAssignment;
@@ -85,12 +88,12 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
         ),
         body: Column(
           children: [
-            // AssignmentCard(team: widget.team, assignment: widget.assignment),
-            // NameCards(teamId: widget.team.id, teamColor: widget.team.color),
+            AssignmentCard(team: team!, assignment: assignment!),
+            NameCards(teamId: team.id, teamColor: team.color),
             Expanded(
               //이름 - 체크리스트
               child: StreamBuilder<List<Member>>(
-                stream: memberState.getMembersStream(team!.id),
+                stream: memberState.getMembersStream(team.id),
                 builder: (context, memberSnapshot) {
                   if (memberSnapshot.hasData) {
                     List<Member> members = memberSnapshot.data!;
@@ -121,53 +124,53 @@ class _AssignmentDetailPageState extends State<AssignmentDetailPage> {
                                 ),
                               ),
                             ),
-                            // if (_activeMemberId == member.id)
-                            //   // CheckListInput(
-                            //   //   teamId: widget.team.id,
-                            //   //   assignmentId: widget.assignment.id,
-                            //   //   memberEmail: member.id,
-                            //   //   colorHex: widget.team.color,
-                            //   //   onSubmitted: _hideTextFormField,
-                            //   // ),
-                            // StreamBuilder<List<ChecklistItem>>(
-                            //   stream: appState.getChecklistStream(
-                            //       widget.team.id,
-                            //       widget.assignment.id,
-                            //       member.id),
-                            //   builder: (context, checklistSnapshot) {
-                            //     String cacheKey =
-                            //         '${widget.team.id}-${widget.assignment.id}-${member.id}';
-                            //     if (checklistSnapshot.hasData) {
-                            //       List<ChecklistItem> checklist =
-                            //           checklistSnapshot.data!;
-                            //       checklist = _sortChecklistItems(checklist);
-                            //       _cachedChecklistItems[cacheKey] = checklist;
-                            //     } else if (checklistSnapshot.hasError) {
-                            //       return Text(
-                            //           'Error: ${checklistSnapshot.error}');
-                            //     }
+                            if (_activeMemberId == member.id)
+                              // CheckListInput(
+                              //   teamId: widget.team.id,
+                              //   assignmentId: widget.assignment.id,
+                              //   memberEmail: member.id,
+                              //   colorHex: widget.team.color,
+                              //   onSubmitted: _hideTextFormField,
+                              // ),
+                              StreamBuilder<List<ChecklistItem>>(
+                                stream: checklistState.getChecklistStream(
+                                    team.id, assignment.id, member.id),
+                                builder: (context, checklistSnapshot) {
+                                  String cacheKey =
+                                      '${team.id}-${assignment.id}-${member.id}';
+                                  if (checklistSnapshot.hasData) {
+                                    List<ChecklistItem> checklist =
+                                        checklistSnapshot.data!;
+                                    checklist = _sortChecklistItems(checklist);
+                                    _cachedChecklistItems[cacheKey] = checklist;
+                                  } else if (checklistSnapshot.hasError) {
+                                    return Text(
+                                        'Error: ${checklistSnapshot.error}');
+                                  }
 
-                            //     List<ChecklistItem> cachedChecklist =
-                            //         _cachedChecklistItems[cacheKey] ?? [];
-                            //     return ListView.builder(
-                            //       physics: const NeverScrollableScrollPhysics(),
-                            //       shrinkWrap: true,
-                            //       itemCount: cachedChecklist.length,
-                            //       itemBuilder: (context, checklistIndex) {
-                            //         ChecklistItem item =
-                            //             cachedChecklist[checklistIndex];
+                                  List<ChecklistItem> cachedChecklist =
+                                      _cachedChecklistItems[cacheKey] ?? [];
+                                  return ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: cachedChecklist.length,
+                                    itemBuilder: (context, checklistIndex) {
+                                      ChecklistItem item =
+                                          cachedChecklist[checklistIndex];
+                                      return null;
 
-                            //         return ChecklistTile(
-                            //           item: item,
-                            //           teamId: widget.team.id,
-                            //           assignmentId: widget.assignment.id,
-                            //           memberEmail: member.id,
-                            //           colorHex: widget.team.color,
-                            //         );
-                            //       },
-                            //     );
-                            //   },
-                            // ),
+                                      // return ChecklistTile(
+                                      //   item: item,
+                                      //   teamId: widget.team.id,
+                                      //   assignmentId: widget.assignment.id,
+                                      //   memberEmail: member.id,
+                                      //   colorHex: widget.team.color,
+                                      // );
+                                    },
+                                  );
+                                },
+                              ),
                           ],
                         );
                       },
