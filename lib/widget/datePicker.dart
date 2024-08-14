@@ -51,11 +51,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           onPressed: () => _selectDate(context),
           child: const Text('Select date and time'),
         ),
-        Text(
-          _selectedDate == null || _selectedTime == null
-              ? 'No date and time selected!'
-              : 'Selected date and time: ${_formatDateTime(_selectedDate!, _selectedTime!)}',
-        ),
       ],
     );
   }

@@ -22,6 +22,7 @@ class AssignmentEditPage extends StatefulWidget {
 class _AssignmentEditPageState extends State<AssignmentEditPage> {
   final _titlecontroller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late String _selectDateTimeString;
 
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
@@ -34,6 +35,7 @@ class _AssignmentEditPageState extends State<AssignmentEditPage> {
     assginmentState = Provider.of<ApplicationState>(context, listen: true)
         .assignmentController;
     _titlecontroller.text = widget.assignment.title;
+    _selectDateTimeString = widget.assignment.dueDate;
   }
 
   @override
@@ -65,16 +67,11 @@ class _AssignmentEditPageState extends State<AssignmentEditPage> {
             onPressed: () {
               debugPrint("_selectedDate $_selectedDate");
               if (_formKey.currentState?.validate() ?? false) {
-                String dateTimeString = '';
-                if (_selectedDate != null && _selectedTime != null) {
-                  dateTimeString =
-                      _formatDateTime(_selectedDate!, _selectedTime!);
-                }
                 assginmentState.updateAssignment(
                     widget.team.id,
                     widget.assignment.id,
                     _titlecontroller.text,
-                    dateTimeString);
+                    _selectDateTimeString);
                 context.pop();
               }
             },
@@ -103,23 +100,22 @@ class _AssignmentEditPageState extends State<AssignmentEditPage> {
             ),
           ),
           const SizedBox(height: 16.0),
-          // DateTimePicker(onDateTimeChanged: _handleDateTimeChanged),
+          DateTimePicker(
+            onDateTimeChanged: (formattedDateTime) {
+              setState(
+                () {
+                  _selectDateTimeString = formattedDateTime;
+                },
+              );
+            },
+          ),
+          Text(
+            _selectDateTimeString.isEmpty
+                ? 'No date and time selected!'
+                : 'Selected date and time: $_selectDateTimeString',
+          )
         ],
       ),
     );
-  }
-
-  void _handleDateTimeChanged(DateTime date, TimeOfDay time) {
-    setState(() {
-      _selectedDate = date;
-      _selectedTime = time;
-    });
-  }
-
-  String _formatDateTime(DateTime date, TimeOfDay time) {
-    final DateTime dateTime =
-        DateTime(date.year, date.month, date.day, time.hour, time.minute);
-
-    return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
   }
 }

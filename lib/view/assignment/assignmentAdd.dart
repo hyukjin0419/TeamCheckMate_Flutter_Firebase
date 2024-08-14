@@ -93,6 +93,11 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
                 );
               },
             ),
+            Text(
+              _selectDateTimeString.isEmpty
+                  ? 'No date and time selected!'
+                  : 'Selected date and time: $_selectDateTimeString',
+            )
           ],
         ),
       ),
