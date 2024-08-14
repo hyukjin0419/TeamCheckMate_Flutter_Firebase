@@ -18,22 +18,7 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
   final _titlecontroller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  DateTime? _selectedDate;
-  TimeOfDay? _selectedTime;
-
-  void _handleDateTimeChanged(DateTime date, TimeOfDay time) {
-    setState(() {
-      _selectedDate = date;
-      _selectedTime = time;
-    });
-  }
-
-  String _formatDateTime(DateTime date, TimeOfDay time) {
-    final DateTime dateTime =
-        DateTime(date.year, date.month, date.day, time.hour, time.minute);
-
-    return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
-  }
+  String _selectDateTimeString = '';
 
   @override
   Widget build(BuildContext context) {
@@ -64,17 +49,11 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                String dateTimeString = '';
-                debugPrint("_selectedDate $_selectedDate");
-                if (_selectedDate != null && _selectedTime != null) {
-                  dateTimeString =
-                      _formatDateTime(_selectedDate!, _selectedTime!);
-                }
-                debugPrint(dateTimeString);
+                debugPrint("_selectedDate $_selectDateTimeString");
                 assginmentState.addAssignment(
                   widget.team.id,
                   _titlecontroller.text,
-                  dateTimeString,
+                  _selectDateTimeString,
                 );
                 context.pop();
               }
@@ -105,7 +84,15 @@ class _AssignmentAddPageState extends State<AssignmentAddPage> {
               ),
             ),
             const SizedBox(height: 16.0),
-            DateTimePicker(onDateTimeChanged: _handleDateTimeChanged),
+            DateTimePicker(
+              onDateTimeChanged: (formattedDateTime) {
+                setState(
+                  () {
+                    _selectDateTimeString = formattedDateTime;
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),

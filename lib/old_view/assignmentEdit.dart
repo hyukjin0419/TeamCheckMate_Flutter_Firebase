@@ -103,7 +103,7 @@ class _AssignmentEditPageState extends State<AssignmentEditPage> {
             ),
           ),
           const SizedBox(height: 16.0),
-          DateTimePicker(onDateTimeChanged: _handleDateTimeChanged),
+          // DateTimePicker(onDateTimeChanged: _handleDateTimeChanged),
         ],
       ),
     );

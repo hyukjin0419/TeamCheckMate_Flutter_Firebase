@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateTimePicker extends StatefulWidget {
-  final Function(DateTime, TimeOfDay) onDateTimeChanged;
+  //이 함수안에 해당 타입의 파라미터로 담은 값을 보낼 수 있다.
+  final Function(String) onDateTimeChanged;
 
   const DateTimePicker({super.key, required this.onDateTimeChanged});
 
@@ -31,7 +32,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           _selectedDate = pickedDate;
           _selectedTime = pickedTime;
         });
-        widget.onDateTimeChanged(pickedDate, pickedTime);
+        widget.onDateTimeChanged(_formatDateTime(pickedDate, pickedTime));
       }
     }
   }
