@@ -50,6 +50,7 @@ dependencies:
   flutter_local_notifications: ^17.1.2
   timezone: ^0.9.3
   lottie: ^3.1.2
+  drag_and_drop_lists: ^0.4.1
 
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,7 @@ class Assignment {
     // required this.creatorUid,
     required this.title,
     // required this.description,
+    required this.order,
     required this.timestamp,
     required this.updateTimestamp,
   });
@@ -18,6 +19,7 @@ class Assignment {
   // final String creatorUid;
   final String title;
   // final String description;
+  int order;
   final Timestamp timestamp;
   final Timestamp updateTimestamp;
 
@@ -28,6 +30,7 @@ class Assignment {
       id: doc.id,
       dueDate: data['dueDate'] ?? '',
       title: data['title'] ?? '',
+      order: data['order'] ?? 0,
       timestamp: data['timestamp'] ?? '',
       updateTimestamp: data['updateTimestamp'] ?? '',
     );

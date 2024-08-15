@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+
 import 'package:team_check_mate/controller/app.dart';
+import 'package:team_check_mate/controller/assignment_controller.dart';
 import 'package:team_check_mate/controller/team_controller.dart';
 import 'package:team_check_mate/model/assignment.dart';
-import 'package:team_check_mate/model/member.dart';
+
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/widget/assignmentCard.dart';
-import 'package:team_check_mate/widget/modalBasic.dart';
+
 import 'package:team_check_mate/widget/nameCard.dart';
 
 class TeamDetailPage extends StatefulWidget {
@@ -21,14 +22,24 @@ class TeamDetailPage extends StatefulWidget {
 }
 
 class _TeamDetailPageState extends State<TeamDetailPage> {
+  List<Assignment> _assignments = [];
+  late TeamController teamState;
+  late var team;
+  late AssignmentController assignmentState;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    teamState =
+        Provider.of<ApplicationState>(context, listen: true).teamController;
+    assignmentState = Provider.of<ApplicationState>(context, listen: true)
+        .assignmentController;
+    team = teamState.selectedTeam;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var teamState =
-        Provider.of<ApplicationState>(context, listen: true).teamController;
-    var assignmentState = Provider.of<ApplicationState>(context, listen: true)
-        .assignmentController;
-    var team = teamState.selectedTeam;
-
+    // var team = teamState.selectedTeam;
     double screenWidth = MediaQuery.of(context).size.width;
     double folderWidth = screenWidth;
     double folderHeight = folderWidth / 2.5;
@@ -141,13 +152,15 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               stream: assignmentState.getAssignmentsStream(team.id),
               builder: ((context, snapshot) {
                 if (snapshot.hasData) {
-                  var assignments = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: assignments.length,
+                  _assignments = snapshot.data!;
+                  // assignments.sort((a, b) => a.order.compareTo(b.order));
+                  return ReorderableListView.builder(
+                    itemCount: _assignments.length,
+                    onReorder: _onReorder,
                     itemBuilder: (BuildContext context, int index) {
-                      var assignment = assignments[index];
-                      // return null;
-                      return AssignmentCard(team: team, assignment: assignment);
+                      var assignment = _assignments[index];
+                      return _buildAssignmentCard(team, assignment, index);
+                      // return AssignmentCard(team: team, assignment: assignment);
                     },
                   );
                 } else {
@@ -159,5 +172,37 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
         ],
       ),
     );
+  }
+
+  Widget _buildAssignmentCard(Team team, Assignment assignment, int index) {
+    return ListTile(
+      key: ValueKey(assignment.id),
+      title: AssignmentCard(
+        team: team,
+        assignment: assignment,
+      ),
+    );
+  }
+
+  Future<void> _onReorder(int oldIndex, int newIndex) async {
+    // UI 업데이트
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex -= 1; // 새로운 인덱스가 올드 인덱스보다 클 경우 인덱스를 조정
+      }
+      // 드래그된 항목을 리스트에서 제거하고, 새로운 위치에 삽입
+      final Assignment movedAssignment = _assignments.removeAt(oldIndex);
+      _assignments.insert(newIndex, movedAssignment);
+    });
+
+    // Firebase에 업데이트
+    await _updateAssignmentOrderInFirebase();
+  }
+
+  Future<void> _updateAssignmentOrderInFirebase() async {
+    for (int i = 0; i < _assignments.length; i++) {
+      Assignment assignment = _assignments[i];
+      await assignmentState.updateAssignmentOrder(team.id, assignment.id, i);
+    }
   }
 }
