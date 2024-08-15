@@ -82,9 +82,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
                   }
                   debugPrint(value);
                 },
-                itemBuilder: (BuildContext context) =>
-                    // onSelected:
-                    <PopupMenuEntry<String>>[
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                       const PopupMenuItem<String>(
                         value: 'create',
                         child: ListTile(
