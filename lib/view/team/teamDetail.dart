@@ -39,25 +39,20 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // var team = teamState.selectedTeam;
     double screenWidth = MediaQuery.of(context).size.width;
     double folderWidth = screenWidth;
     double folderHeight = folderWidth / 2.5;
 
     String color = team!.color;
 
-    // ignore: unused_local_variable
-
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          // backgroundColor: Colors.black,
           leadingWidth: 80,
           leading: IconButton(
             icon: const Icon(
               Icons.backspace_outlined,
               semanticLabel: 'back',
-              // color: Colors.white
             ),
             onPressed: () {
               context.pop();
@@ -153,14 +148,12 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               builder: ((context, snapshot) {
                 if (snapshot.hasData) {
                   _assignments = snapshot.data!;
-                  // assignments.sort((a, b) => a.order.compareTo(b.order));
                   return ReorderableListView.builder(
                     itemCount: _assignments.length,
                     onReorder: _onReorder,
                     itemBuilder: (BuildContext context, int index) {
                       var assignment = _assignments[index];
                       return _buildAssignmentCard(team, assignment, index);
-                      // return AssignmentCard(team: team, assignment: assignment);
                     },
                   );
                 } else {

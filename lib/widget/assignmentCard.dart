@@ -86,7 +86,7 @@ class _AssignmentCardState extends State<AssignmentCard> {
     String title = widget.assignment.title;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       child: Stack(
         children: [
           GestureDetector(
