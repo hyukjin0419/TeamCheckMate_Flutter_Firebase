@@ -60,24 +60,24 @@ class TeamController with ChangeNotifier {
     String teamId = teamRef.id;
     String? userEmail = currentUser?.email;
 
-    var userTeamOrders = await _db
-        .collection('users')
-        .doc(userEmail)
-        .collection('teamOrders')
-        .orderBy('order', descending: true)
-        .limit(1)
-        .get();
-    int newOrder = 0;
-    if (userTeamOrders.docs.isNotEmpty) {
-      newOrder = userTeamOrders.docs.first['order'] + 1;
-    }
+    // var userTeamOrders = await _db
+    //     .collection('users')
+    //     .doc(userEmail)
+    //     .collection('teamOrders')
+    //     .orderBy('order', descending: true)
+    //     .limit(1)
+    //     .get();
+    // int newOrder = 0;
+    // if (userTeamOrders.docs.isNotEmpty) {
+    //   newOrder = userTeamOrders.docs.first['order'] + 1;
+    // }
 
-    await _db
-        .collection('users')
-        .doc(userEmail)
-        .collection('teamOrders')
-        .doc(teamId)
-        .set({'order': newOrder});
+    // await _db
+    //     .collection('users')
+    //     .doc(userEmail)
+    //     .collection('teamOrders')
+    //     .doc(teamId)
+    //     .set({'order': newOrder});
     await addTeamMember(teamRef.id, currentUser);
   }
 
@@ -172,6 +172,7 @@ class TeamController with ChangeNotifier {
         }
       }
 
+      //4. 팀 문서 삭제
       await _db.collection('teams').doc(teamId).delete();
     } catch (e) {
       debugPrint("Error deleting team: $e");
