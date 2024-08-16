@@ -1,33 +1,99 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
+import 'package:team_check_mate/services/notification_service.dart';
 import 'package:team_check_mate/widget/modalBasic.dart';
 
-class AssignmentCard extends StatelessWidget {
+String getTimeRemaining(DateTime? dueDate) {
+  if (dueDate == null) {
+    return "No due date set";
+  }
+
+  Duration difference = dueDate.difference(DateTime.now());
+  if (difference.isNegative) {
+    return "The deadline has passed.";
+  } else if (difference.inDays > 1) {
+    return "${difference.inDays} days left";
+  } else {
+    return "${difference.inHours}h ${difference.inMinutes % 60}m left";
+  }
+}
+
+class AssignmentCard extends StatefulWidget {
   final Assignment assignment;
   final Team team;
+
   const AssignmentCard(
       {super.key, required this.team, required this.assignment});
 
   @override
+  _AssignmentCardState createState() => _AssignmentCardState();
+}
+
+class _AssignmentCardState extends State<AssignmentCard> {
+  late Timer _timer;
+  late String _timeRemaining;
+  DateTime? _dueDate;
+  late NotificationService _notificationService;
+  bool _notificationSent = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationService =
+        Provider.of<NotificationService>(context, listen: false);
+    _dueDate = widget.assignment.dueDate.isNotEmpty
+        ? DateTime.tryParse(widget.assignment.dueDate)
+        : null;
+    _timeRemaining = getTimeRemaining(_dueDate);
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+      setState(() {
+        _timeRemaining = getTimeRemaining(_dueDate);
+      });
+
+      // 1분 남았을 때 알림 보내기
+      if (_dueDate != null && !_notificationSent) {
+        Duration difference = _dueDate!.difference(DateTime.now());
+        if (difference.inMinutes == 1 && difference.inMinutes > 0) {
+          debugPrint("is workuing");
+          _notificationService.sendNotification(
+            'Assignment Due Reminder',
+            'Your assignment "${widget.assignment.title}" is due in 1 minute!',
+          );
+          _notificationSent = true;
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var assignmentState = Provider.of<ApplicationState>(context, listen: true)
+        .assignmentController;
     double screenWidth = MediaQuery.of(context).size.width;
     double folderWidth = screenWidth;
-    // double folderHeight = folderWidth * 0.2;
-    String title = assignment.title;
-    String dueDate = assignment.dueDate; // dueDate 필드 추가
+    String title = widget.assignment.title;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       child: Stack(
         children: [
           GestureDetector(
             onTap: () {
+              assignmentState.selectAssignment.call(widget.assignment);
               context.push(
                 "/home/teamDetail/assignmentDetail",
-                extra: {'team': team, 'assignment': assignment},
               );
             },
             child: SizedBox(
@@ -46,7 +112,9 @@ class AssignmentCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Duedate: $dueDate",
+                    _dueDate != null
+                        ? "Duedate: ${widget.assignment.dueDate} ($_timeRemaining)"
+                        : "No due date set",
                     maxLines: 1,
                     overflow: TextOverflow.fade,
                     softWrap: false,
@@ -66,13 +134,12 @@ class AssignmentCard extends StatelessWidget {
           ),
           Positioned(
             right: 1,
-            // top: 25,
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 debugPrint('Vertical dots tapped!');
                 BottomModal.showCustomDialog(
-                    context, team.color, assignment, team);
+                    context, widget.team.color, widget.assignment, widget.team);
               },
               child: const SizedBox(
                 width: 40,

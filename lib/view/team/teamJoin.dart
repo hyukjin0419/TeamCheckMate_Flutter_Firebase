@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:provider/provider.dart';
-import 'package:team_check_mate/app.dart';
+import 'package:team_check_mate/controller/app.dart';
 
 class TeamJoinPage extends StatefulWidget {
   const TeamJoinPage({super.key});
@@ -58,6 +58,11 @@ class _TeamJoinPageState extends State<TeamJoinPage> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
+    var teamController =
+        Provider.of<ApplicationState>(context, listen: false).teamController;
+    var userController =
+        Provider.of<ApplicationState>(context, listen: false).authController;
+
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) async {
       if (_isJoiningTeam) return; // 이미 팀에 참여 중이면 리턴
@@ -68,10 +73,11 @@ class _TeamJoinPageState extends State<TeamJoinPage> {
       });
 
       if (result != null) {
-        String teamId = result!.code!;
+        String teamCode = result!.code!;
         try {
-          await Provider.of<ApplicationState>(context, listen: false)
-              .joinTeam(teamId);
+          await teamController.joinTeam(teamCode, userController.currentUser);
+          // await Provider.of<ApplicationState>(context, listen: false).teamController
+          //     .joinTeam(teamCode);
           if (mounted) {
             context.pop();
           }

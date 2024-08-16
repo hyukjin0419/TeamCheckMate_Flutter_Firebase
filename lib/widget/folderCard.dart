@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/model/team.dart';
 
 class FolderCard extends StatelessWidget {
@@ -8,6 +10,8 @@ class FolderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var teamState =
+        Provider.of<ApplicationState>(context, listen: true).teamController;
     String color = team.color;
     String title = team.title;
 
@@ -21,7 +25,8 @@ class FolderCard extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            context.push("/home/teamDetail", extra: team);
+            teamState.selectTeam.call(team);
+            context.push("/home/teamDetail");
           },
           child: SizedBox(
             width: folderWidth,

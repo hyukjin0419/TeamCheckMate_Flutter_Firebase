@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:team_check_mate/app.dart';
 import 'package:team_check_mate/model/team.dart';
 
 class TeamQRPage extends StatelessWidget {
@@ -11,8 +10,6 @@ class TeamQRPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = Provider.of<ApplicationState>(context, listen: true);
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

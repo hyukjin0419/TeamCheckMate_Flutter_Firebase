@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:team_check_mate/app.dart';
+import 'package:team_check_mate/controller/app.dart';
+import 'package:team_check_mate/controller/assignment_controller.dart';
 import 'package:team_check_mate/model/assignment.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:intl/intl.dart';
@@ -21,37 +22,31 @@ class AssignmentEditPage extends StatefulWidget {
 class _AssignmentEditPageState extends State<AssignmentEditPage> {
   final _titlecontroller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late String _selectDateTimeString;
 
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
+  late AssignmentController assignmentState;
+  late var assginmentState;
 
-  void _handleDateTimeChanged(DateTime date, TimeOfDay time) {
-    setState(() {
-      _selectedDate = date;
-      _selectedTime = time;
-    });
-  }
-
-  String _formatDateTime(DateTime date, TimeOfDay time) {
-    final DateTime dateTime =
-        DateTime(date.year, date.month, date.day, time.hour, time.minute);
-
-    return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    assginmentState = Provider.of<ApplicationState>(context, listen: true)
+        .assignmentController;
+    _titlecontroller.text = widget.assignment.title;
+    _selectDateTimeString = widget.assignment.dueDate;
   }
 
   @override
   Widget build(BuildContext context) {
-    var appState = Provider.of<ApplicationState>(context, listen: true);
     return Scaffold(
-      // backgroundColor: Colors.black,
       appBar: AppBar(
-        // backgroundColor: Colors.black,
         leadingWidth: 80,
         leading: IconButton(
           icon: const Icon(
             Icons.backspace_outlined,
             semanticLabel: 'back',
-            // color: Colors.white
           ),
           onPressed: () {
             context.pop();
@@ -72,13 +67,11 @@ class _AssignmentEditPageState extends State<AssignmentEditPage> {
             onPressed: () {
               debugPrint("_selectedDate $_selectedDate");
               if (_formKey.currentState?.validate() ?? false) {
-                String dateTimeString = '';
-                if (_selectedDate != null && _selectedTime != null) {
-                  dateTimeString =
-                      _formatDateTime(_selectedDate!, _selectedTime!);
-                }
-                appState.updateAssignment(widget.team.id, widget.assignment.id,
-                    _titlecontroller.text, dateTimeString);
+                assginmentState.updateAssignment(
+                    widget.team.id,
+                    widget.assignment.id,
+                    _titlecontroller.text,
+                    _selectDateTimeString);
                 context.pop();
               }
             },
@@ -107,7 +100,20 @@ class _AssignmentEditPageState extends State<AssignmentEditPage> {
             ),
           ),
           const SizedBox(height: 16.0),
-          DateTimePicker(onDateTimeChanged: _handleDateTimeChanged),
+          DateTimePicker(
+            onDateTimeChanged: (formattedDateTime) {
+              setState(
+                () {
+                  _selectDateTimeString = formattedDateTime;
+                },
+              );
+            },
+          ),
+          Text(
+            _selectDateTimeString.isEmpty
+                ? 'No date and time selected!'
+                : 'Selected date and time: $_selectDateTimeString',
+          )
         ],
       ),
     );

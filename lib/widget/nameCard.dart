@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:team_check_mate/app.dart';
+import 'package:team_check_mate/controller/app.dart';
+import 'package:team_check_mate/controller/member_controller.dart';
 import 'package:team_check_mate/model/member.dart';
 
 class NameCards extends StatelessWidget {
@@ -11,11 +12,12 @@ class NameCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = Provider.of<ApplicationState>(context, listen: true);
+    var memberState =
+        Provider.of<ApplicationState>(context, listen: true).memberController;
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: StreamBuilder<List<Member>>(
-        stream: appState.getMembersStream(teamId),
+        stream: memberState.getMembersStream(teamId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Member> members = snapshot.data ?? [];

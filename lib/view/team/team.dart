@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:team_check_mate/app.dart';
+import 'package:team_check_mate/controller/app.dart';
 import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/widget/bottomNavigation.dart';
 import 'package:team_check_mate/widget/folderCard.dart';
@@ -18,7 +18,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    var appState = Provider.of<ApplicationState>(context, listen: true);
+    var userAppState =
+        Provider.of<ApplicationState>(context, listen: true).authController;
+    var teamState =
+        Provider.of<ApplicationState>(context, listen: true).teamController;
     return Scaffold(
       // backgroundColor: const Color.fromRGBO(231, 228, 192, 1.0),
       appBar: AppBar(
@@ -57,8 +60,11 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
         child: StreamBuilder<List<Team>>(
-          stream: appState.getTeamsStream(),
+          stream: teamState.getTeamsStream(userAppState.currentUser),
           builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            }
             if (snapshot.hasData) {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

@@ -8,6 +8,7 @@ class NotificationService {
 
   NotificationService() {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    init();
   }
 
   Future<void> init() async {
@@ -32,39 +33,38 @@ class NotificationService {
     // 시간대 초기화
     tz.initializeTimeZones();
 
-    // 매일 알림 스케줄링
-    await scheduleDailyNotification();
+    // 알림 권한 요청
+    await _requestPermissions();
   }
 
-  Future<void> scheduleDailyNotification() async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Due date reminder',
-      'Your assignment is due tomorrow!',
-      _nextInstanceOfTenAM(),
-      const NotificationDetails(
-        iOS: DarwinNotificationDetails(),
-      ),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time, // 매일 같은 시간에 알림
+  Future<void> _requestPermissions() async {
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  Future<void> showTestNotification() async {
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      iOS: DarwinNotificationDetails(),
     );
-  }
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Test Notification',
+      'This is the notification body',
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
 
-  tz.TZDateTime _nextInstanceOfTenAM() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 10);
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    return scheduledDate;
+    debugPrint('Notification scheduled');
   }
 
   Future<void> onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) async {
-    // 알림을 눌렀을 때의 동작을 정의합니다.
     final String? payload = notificationResponse.payload;
     if (payload != null) {
       debugPrint('notification payload: $payload');
@@ -77,6 +77,23 @@ class NotificationService {
     String? body,
     String? payload,
   ) async {
-    // iOS에서 알림을 받았을 때의 동작을 정의합니다.
+    debugPrint('Received local notification: $title $body');
+  }
+
+  Future<void> sendNotification(String title, String body) async {
+    const NotificationDetails notificationDetails = NotificationDetails(
+      iOS: DarwinNotificationDetails(),
+      android: AndroidNotificationDetails(
+          'your_channel_id', 'your_channel_name',
+          importance: Importance.high, priority: Priority.high),
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      notificationDetails,
+      payload: 'assignment_due',
+    );
   }
 }
