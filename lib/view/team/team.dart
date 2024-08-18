@@ -81,16 +81,16 @@ class _HomePageState extends State<HomePage> {
               return ReorderableBuilder(
                 scrollController: _scrollController,
                 onReorder: (ReorderedListFunction reorderedListFunction) async {
-                  setState(() {
-                    _teams = reorderedListFunction(_teams) as List<Team>;
-                  });
+                  List<Team> reorderTeams =
+                      _teams = reorderedListFunction(_teams) as List<Team>;
+
                   // Firebase에 순서 업데이트
                   // for (int i = 0; i < _teams.length; i++) {
                   //   debugPrint("_team[i].id: ${_teams[i].id}");
                   // }
                   await teamOrderState.updateTeamOrders(
                     currentUser!.email!,
-                    _teams,
+                    reorderTeams,
                   );
                 },
                 builder: (children) {
