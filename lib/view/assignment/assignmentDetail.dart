@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:team_check_mate/controller/app.dart';
-import 'package:team_check_mate/model/member.dart';
 import 'package:team_check_mate/widget/assignmentCard.dart';
 import 'package:team_check_mate/widget/checklistTile.dart';
 import 'package:team_check_mate/widget/nameCard.dart';

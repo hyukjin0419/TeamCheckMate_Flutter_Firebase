@@ -64,7 +64,7 @@ class _TeamAddPageState extends State<TeamAddPage> {
                 style: TextStyle(color: Colors.black, fontSize: 18)),
             onPressed: () {
               if (_formKey.currentState?.validate() ?? false) {
-                teamState.addTeam(_titlecontroller.text, selectedColor,
+                teamState.createTeam(_titlecontroller.text, selectedColor,
                     userState.currentUser);
                 context.go('/home');
               }

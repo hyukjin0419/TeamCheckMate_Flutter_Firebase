@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 200.0),
+            padding: const EdgeInsets.only(top: 201.0),
             child: Lottie.asset('assets/login_animation.json'),
           ),
           Center(
