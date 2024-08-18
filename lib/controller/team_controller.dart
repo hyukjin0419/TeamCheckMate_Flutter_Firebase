@@ -46,6 +46,11 @@ class TeamController with ChangeNotifier {
           teams.add(Team.fromFirestore(teamDoc));
         }
       }
+      // debugPrint("getStream");
+      // for (var team in teams) {
+      //   debugPrint(team.id);
+      // }
+
       return teams;
     });
   }
@@ -193,6 +198,24 @@ class TeamController with ChangeNotifier {
       debugPrint("Error updating team: $e");
     }
   }
+
+  // Future<void> updateTeamOrder(List<Team> teams) async {
+  //   WriteBatch batch = _db.batch();
+
+  //   for (int i = 0; i < teams.length; i++) {
+  //     Team team = teams[i];
+  //     DocumentReference teamRef = _db.collection('teams').doc(team.id);
+
+  //     batch.update(teamRef, {'order': i});
+  //   }
+
+  //   try {
+  //     await batch.commit();
+  //     debugPrint("Team order updated successfully");
+  //   } catch (e) {
+  //     debugPrint("Error updating team order: $e");
+  //   }
+  // }
 
   // Future<void> _addTeamOrderForUser(String teamId, User user) async {
   //   String userEmail = user.email!;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:team_check_mate/controller/member_controller.dart';
+import 'package:team_check_mate/controller/team_order_controller.dart';
 import 'auth_controller.dart';
 import 'team_controller.dart';
 import 'assignment_controller.dart';
@@ -11,6 +12,8 @@ class ApplicationState extends ChangeNotifier {
   final AssignmentController assignmentController = AssignmentController();
   final ChecklistController checklistController = ChecklistController();
   final MemberController memberController = MemberController();
+  final TeamOrderController teamOrderController = TeamOrderController();
+
   ApplicationState() {
     // 초기화 코드
   }
@@ -21,6 +24,7 @@ class ApplicationState extends ChangeNotifier {
     super.notifyListeners();
     authController.notifyListeners();
     teamController.notifyListeners();
+    teamOrderController.notifyListeners();
     assignmentController.notifyListeners();
     checklistController.notifyListeners();
     memberController.notifyListeners();

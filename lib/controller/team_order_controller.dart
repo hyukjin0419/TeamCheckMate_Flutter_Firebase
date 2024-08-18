@@ -1,36 +1,45 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:team_check_mate/model/team.dart';
 import 'package:team_check_mate/model/teamOder.dart';
 
-class TeamOrderController {
+class TeamOrderController with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // 특정 사용자의 팀 순서 데이터를 가져오는 메서드
-  Stream<List<TeamOrder>> getTeamOrders(String userId) {
-    return _db
-        .collection('users')
-        .doc(userId)
-        .collection('teamOrders')
-        .orderBy('order')
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => TeamOrder.fromFirestore(doc)).toList());
-  }
+  // // 특정 사용자의 팀 순서 데이터를 가져오는 메서드
+  // Stream<List<TeamOrder>> getTeamOrders(String userId) {
+  //   return _db
+  //       .collection('users')
+  //       .doc(userId)
+  //       .collection('teamOrders')
+  //       .orderBy('order')
+  //       .snapshots()
+  //       .map((snapshot) =>
+  //           snapshot.docs.map((doc) => TeamOrder.fromFirestore(doc)).toList());
+  // }
 
   // 특정 사용자의 팀 순서를 업데이트하는 메서드
-  Future<void> updateTeamOrder(String userId, String teamId, int order) async {
-    try {
-      await _db
-          .collection('users')
-          .doc(userId)
-          .collection('teamOrders')
-          .doc(teamId)
-          .set({'order': order}, SetOptions(merge: true));
+  Future<void> updateTeamOrders(String userId, List<Team> teams) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
 
-      debugPrint('Team $teamId order for user $userId updated to $order');
+    try {
+      for (int i = 0; i < teams.length; i++) {
+        DocumentReference teamOrderRef = FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('teamOrders')
+            .doc(teams[i].id);
+
+        batch.set(teamOrderRef, {'order': i}, SetOptions(merge: true));
+        notifyListeners();
+      }
+
+      // 배치 커밋
+      await batch.commit();
+      debugPrint('All team orders for user $userId updated successfully');
     } catch (e) {
-      debugPrint('Error updating team order: $e');
+      debugPrint('Error updating team orders: $e');
     }
   }
 
