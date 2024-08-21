@@ -139,7 +139,7 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
               ],
             ),
           ),
-          Flexible(child: NameCards(teamId: team.id, teamColor: team.color)),
+          NameCards(teamId: team.id, teamColor: team.color),
           Flexible(
             child: StreamBuilder<List<Assignment>>(
               stream: assignmentState.getAssignmentsStream(team.id),
