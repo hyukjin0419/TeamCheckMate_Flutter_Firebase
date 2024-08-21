@@ -176,24 +176,13 @@ class _TeamDetailPageState extends State<TeamDetailPage> {
   }
 
   Future<void> _onReorder(int oldIndex, int newIndex) async {
-    // UI 업데이트
-    setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1; // 새로운 인덱스가 올드 인덱스보다 클 경우 인덱스를 조정
-      }
-      // 드래그된 항목을 리스트에서 제거하고, 새로운 위치에 삽입
-      final Assignment movedAssignment = _assignments.removeAt(oldIndex);
-      _assignments.insert(newIndex, movedAssignment);
-    });
-
-    // Firebase에 업데이트
-    await _updateAssignmentOrderInFirebase();
-  }
-
-  Future<void> _updateAssignmentOrderInFirebase() async {
-    for (int i = 0; i < _assignments.length; i++) {
-      Assignment assignment = _assignments[i];
-      await assignmentState.updateAssignmentOrder(team.id, assignment.id, i);
+    if (newIndex > oldIndex) {
+      newIndex -= 1; // 새로운 인덱스가 올드 인덱스보다 클 경우 인덱스를 조정
     }
+    // 드래그된 항목을 리스트에서 제거하고, 새로운 위치에 삽입
+    final Assignment movedAssignment = _assignments.removeAt(oldIndex);
+    _assignments.insert(newIndex, movedAssignment);
+
+    await assignmentState.updateAssignmentOrder(team.id, _assignments);
   }
 }

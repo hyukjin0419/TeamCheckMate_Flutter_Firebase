@@ -98,16 +98,22 @@ class AssignmentController with ChangeNotifier {
   }
 
   Future<void> updateAssignmentOrder(
-      String teamId, String assignmentId, int newOrder) async {
+      String teamId, List<Assignment> orderedAssignments) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
     try {
-      await _db
-          .collection('teams')
-          .doc(teamId)
-          .collection('assignments')
-          .doc(assignmentId)
-          .update({'order': newOrder});
+      for (int i = 0; i < orderedAssignments.length; i++) {
+        Assignment assignment = orderedAssignments[i];
+        DocumentReference assignmentRef = _db
+            .collection('teams')
+            .doc(teamId)
+            .collection('assignments')
+            .doc(assignment.id);
 
-      debugPrint('Assignment $assignmentId order updated to $newOrder');
+        batch.update(assignmentRef, {'order': i});
+      }
+      await batch.commit();
+
+      debugPrint('Assignment order updated successfully');
     } catch (e) {
       debugPrint('Error updating assignment order: $e');
     }
